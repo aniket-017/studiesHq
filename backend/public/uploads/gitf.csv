@@ -1,0 +1,10 @@
+firstName,lastName,email,amount,giftCardType
+John,Doe,john.doe@example.com,50,Visa E gift card
+Jane,Smith,jane.smith@example.com,100,Amazon E gift card
+Alice,Johnson,alice.johnson@example.com,75,Referral rewards from Agilelabs.ai
+Bob,Brown,bob.brown@example.com,60,Visa E gift card
+Carol,Wilson,carol.wilson@example.com,80,Amazon E gift card
+Dave,Lee,dave.lee@example.com,90,Referral rewards from Agilelabs.ai
+Frank,Clark,frank.clark@example.com,110,Amazon E gift card
+Grace,Lewis,grace.lewis@example.com,130,Referral rewards from Agilelabs.ai
+Henry,Walker,henry.walker@example.com,140,Visa E gift card
