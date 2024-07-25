@@ -9,8 +9,10 @@ import Preferences from "./pages/Preferences";
 import KnowledgeBank from "./pages/KnowledgeBank";
 import Support from "./pages/Support";
 import Message from "./pages/Messages";
+import PandaLogin from "./pages/PandaLogin";
 import Sidebar from "./components/Sidebar";
 import "./App.css"; // Import the CSS for layout
+
 
 function App() {
   return (
@@ -19,7 +21,7 @@ function App() {
         <Sidebar />
         <div className="content">
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<PandaLogin />} />
             <Route path="/my-gigs" element={<MyGigs />} />
             <Route path="/available-gigs" element={<AvailableGigs />} />
             <Route path="/profile" element={<Profile />} />

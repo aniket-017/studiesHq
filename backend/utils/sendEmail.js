@@ -4,7 +4,6 @@ const nodeMailer = require("nodemailer");
 //SMTP is simple mail transfer protocol jeczaonjrnquodrg owhkaiirlpagvpfo jifmtmhfmfnsvpgr  lfvicuglworgwugn 
 
 const sendEmail = async (options) => {
-  console.log(options);
   const transporter = nodeMailer.createTransport({
 
     host: process.env.SMPT_HOST,
@@ -13,7 +12,7 @@ const sendEmail = async (options) => {
     auth: {
       user: process.env.SMPT_MAIL,
       pass: process.env.SMPT_PASSWORD,
-    }, 
+    },
   });
 
   const mailOptions = {
@@ -22,7 +21,6 @@ const sendEmail = async (options) => {
     subject: options.subject,
     text: options.message,
   };
-  console.log(transporter);
 
   await transporter.sendMail(mailOptions);
 };

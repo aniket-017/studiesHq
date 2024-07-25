@@ -4,26 +4,25 @@ const path = require("path");
 const errorMiddleware = require("./middleware/error");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
-// const fileUpload = require("express-fileupload");
+const fileUpload = require("express-fileupload");
 
-// DB_URI = "mongodb://localhost:27017/PartCode"
-// DB_URI = "mongodb+srv://latakhillare:LtmZBL4ZiJiZ3hs0@cluster0.impfvlk.mongodb.net/?retryWrites=true&w=majority"
 app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(fileUpload());
+app.use(fileUpload());
 
 //Route Imports
 // const product = require("./routes/productRoute");
-
-const giftRoute = require("./routes/giftRoute");
-const giftCardRoute = require("./routes/giftCardRoute");
+const venue = require("./routes/venueRoute");
+const user = require("./routes/userRoute");
+const company = require("./routes/companyRoute");
+const serviceDetail = require("./routes/serviceDetailRoute");
 
 // app.use("/api/z1",product);
-
-app.use("/aak", giftRoute);
-app.use("/aak", giftCardRoute);
-
+app.use("/aak/l1", venue);
+app.use("/aak/l1", user);
+app.use("/aak/l1", company);
+app.use("/aak/l1", serviceDetail);
 
 app.use(express.static(path.join(__dirname, "../frontend/build")));
 
