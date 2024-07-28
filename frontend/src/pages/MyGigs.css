@@ -1,101 +1,63 @@
-.my-gigs {
-  font-family: Arial, sans-serif;
-  margin: 20px;
+.mygigs-container {
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.mygigs-container h2 {
   text-align: center;
-  padding-left: 250px; /* Adjust based on your sidebar width */
-  transition: padding-left 0.3s ease;
-}
-
-h1 {
+  margin-bottom: 20px;
   color: #333;
+}
+
+.mygigs-tabs {
+  display: flex;
+  justify-content: center;
   margin-bottom: 20px;
 }
 
-.tabs {
-  margin-bottom: 20px;
-}
-
-.tabs button {
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
+.mygigs-tabs button {
+  background: none;
+  border: none;
   padding: 10px 20px;
   cursor: pointer;
+  font-size: 16px;
   margin: 0 5px;
-  transition: background-color 0.3s, color 0.3s;
+  color: #007bff;
+  transition: background-color 0.2s;
 }
 
-.tabs button.active {
-  background-color: #007bff;
-  color: white;
+.mygigs-tabs button.mygigs-active {
+  border-bottom: 2px solid #007bff;
 }
 
-.tabs button:hover {
-  background-color: #007bff;
-  color: white;
-}
-
-.table-container {
-  overflow-x: auto;
-  margin: 0 auto;
-  max-width: 100%;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 20px 0;
-}
-
-thead {
-  background-color: #007bff;
-  color: white;
-}
-
-th, td {
-  padding: 10px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-}
-
-tr:hover {
+.mygigs-tabs button:hover {
   background-color: #f1f1f1;
 }
 
-/* Responsive styles */
-@media (max-width: 768px) {
-  .my-gigs {
-    padding-left: 0; /* Remove left padding on smaller screens */
-    margin: 0 10px;
-  }
-
-  .tabs button {
-    padding: 8px 12px;
-    margin: 2px;
-  }
-
-  th, td {
-    padding: 8px;
-  }
+.mygigs-gigs-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-@media (max-width: 480px) {
-  .tabs {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
+.mygigs-gig-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  padding: 20px;
+  width: 80%;
+  text-align: left;
+}
 
-  .tabs button {
-    flex: 1 1 100%;
-    margin: 2px 0;
-    padding: 10px;
-  }
+.mygigs-gig-title {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #333;
+}
 
-  table {
-    font-size: 14px;
-  }
-
-  th, td {
-    padding: 5px;
-  }
+.mygigs-gig-description {
+  font-size: 14px;
+  color: #666;
 }

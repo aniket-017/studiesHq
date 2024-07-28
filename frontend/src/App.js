@@ -1,4 +1,4 @@
-import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Home";
 import MyGigs from "./pages/MyGigs";
@@ -13,15 +13,16 @@ import PandaLogin from "./pages/PandaLogin";
 import Sidebar from "./components/Sidebar";
 import "./App.css"; // Import the CSS for layout
 
-
 function App() {
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+
+  console.log(isAuthenticated);
   return (
     <div className="app">
       <Router>
-        <Sidebar />
+      {isAuthenticated && <Sidebar />}
         <div className="content">
           <Routes>
-            <Route path="/" element={<PandaLogin />} />
             <Route path="/my-gigs" element={<MyGigs />} />
             <Route path="/available-gigs" element={<AvailableGigs />} />
             <Route path="/profile" element={<Profile />} />
@@ -31,6 +32,8 @@ function App() {
             <Route path="/knowledge-bank" element={<KnowledgeBank />} />
             <Route path="/support" element={<Support />} />
             <Route path="/available-gigs" element={<AvailableGigs />} />
+            {/* <Route path="/" element={<PandaLogin />} /> */}
+            <Route path="/" element={isAuthenticated ? <Home /> : <PandaLogin />} />
           </Routes>
         </div>
       </Router>

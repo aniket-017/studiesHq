@@ -2,148 +2,138 @@ import React, { useState } from "react";
 import "./Profile.css";
 
 const Profile = () => {
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentSection, setCurrentSection] = useState('basic');
 
-  const handleNext = () => {
-    setCurrentStep(currentStep + 1);
+  const handleSectionChange = (section) => {
+    setCurrentSection(section);
   };
 
-  const handlePrevious = () => {
-    setCurrentStep(currentStep - 1);
-  };
-
-  const setProgressBar = (step) => {
-    const progressPercent = ((step - 1) / 3) * 100;
-    return progressPercent.toFixed();
-  };
+  const sections = [
+    'basic', 'education', 'experience', 'languages', 'skills', 'payment'
+  ];
 
   return (
     <div className="container-fluid">
       <div className="row justify-content-center">
         <div className="col-11 col-sm-10 col-md-10 col-lg-6 col-xl-5 text-center p-0 mt-3 mb-2">
-          <div className="card px-0 pt-4 pb-0 mt-3 mb-3">
-            {/* <h2 id="heading">Sign Up Your User Account</h2> */}
-            <p>Fill all form fields to go to the next step</p>
-            <form id="msform">
-              <ul id="progressbar">
-                <li className={currentStep >= 1 ? "active" : ""} id="account">
-                  <strong>Account</strong>
-                </li>
-                <li className={currentStep >= 2 ? "active" : ""} id="personal">
-                  <strong>Personal</strong>
-                </li>
-                <li className={currentStep >= 3 ? "active" : ""} id="payment">
-                  <strong>Image</strong>
-                </li>
-                <li className={currentStep >= 4 ? "active" : ""} id="confirm">
-                  <strong>Finish</strong>
-                </li>
+          <div className="card1 px-0 pt-4 pb-0 mt-3 mb-3">
+            <p>Fill out or update your profile details</p>
+            <form id="profile-form">
+              <ul id="section-tabs">
+                {sections.map(section => (
+                  <li
+                    key={section}
+                    className={currentSection === section ? "active" : ""}
+                    onClick={() => handleSectionChange(section)}
+                  >
+                    <strong>{section.charAt(0).toUpperCase() + section.slice(1)}</strong>
+                  </li>
+                ))}
               </ul>
-              <div className="progress">
-                <div
-                  className="progress-bar progress-bar-striped progress-bar-animated"
-                  role="progressbar"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                  style={{ width: `${setProgressBar(currentStep)}%` }}
-                ></div>
+              <div className="section-content">
+                {currentSection === 'basic' && (
+                  <fieldset>
+                    <div className="form-card">
+                      <h2 className="fs-title">Basic Information:</h2>
+                      <label className="fieldlabels">First Name: *</label>
+                      <input type="text" name="fname" placeholder="First Name" />
+                      <label className="fieldlabels">Middle Name:</label>
+                      <input type="text" name="mname" placeholder="Middle Name" />
+                      <label className="fieldlabels">Last Name: *</label>
+                      <input type="text" name="lname" placeholder="Last Name" />
+                      <label className="fieldlabels">Gender: *</label>
+                      <input type="text" name="gender" placeholder="Gender" />
+                      <label className="fieldlabels">Date of Birth: *</label>
+                      <input type="date" name="dob" placeholder="Date of Birth" />
+                      <label className="fieldlabels">Country: *</label>
+                      <input type="text" name="country" placeholder="Country" />
+                      <label className="fieldlabels">State/Province: *</label>
+                      <input type="text" name="state" placeholder="State/Province" />
+                      <label className="fieldlabels">City: *</label>
+                      <input type="text" name="city" placeholder="City" />
+                      <label className="fieldlabels">Contact Number: *</label>
+                      <input type="text" name="contact" placeholder="Contact Number" />
+                      <label className="fieldlabels">Email ID: *</label>
+                      <input type="email" name="email" placeholder="Email ID" />
+                    </div>
+                    <input type="button" name="save" className="action-button" value="Save" />
+                  </fieldset>
+                )}
+                {currentSection === 'education' && (
+                  <fieldset>
+                    <div className="form-card">
+                      <h2 className="fs-title">Education:</h2>
+                      <label className="fieldlabels">College/University: *</label>
+                      <input type="text" name="college" placeholder="College/University" />
+                      <label className="fieldlabels">Year of Passing: *</label>
+                      <input type="text" name="year" placeholder="Year of Passing" />
+                      <label className="fieldlabels">Specialization: *</label>
+                      <input type="text" name="specialization" placeholder="Specialization" />
+                      <input type="button" name="addMore" className="action-button" value="Add More" />
+                    </div>
+                    <input type="button" name="save" className="action-button" value="Save" />
+                  </fieldset>
+                )}
+                {currentSection === 'experience' && (
+                  <fieldset>
+                    <div className="form-card">
+                      <h2 className="fs-title">Experience:</h2>
+                      <label className="fieldlabels">Company: *</label>
+                      <input type="text" name="company" placeholder="Company" />
+                      <label className="fieldlabels">Role: *</label>
+                      <input type="text" name="role" placeholder="Role" />
+                      <label className="fieldlabels">Duration: *</label>
+                      <input type="text" name="duration" placeholder="Duration" />
+                      <label className="fieldlabels">Description:</label>
+                      <textarea name="description" placeholder="Description"></textarea>
+                      <input type="button" name="addMore" className="action-button" value="Add More" />
+                    </div>
+                    <input type="button" name="save" className="action-button" value="Save" />
+                  </fieldset>
+                )}
+                {currentSection === 'languages' && (
+                  <fieldset>
+                    <div className="form-card">
+                      <h2 className="fs-title">Languages:</h2>
+                      <label className="fieldlabels">Language: *</label>
+                      <input type="text" name="language" placeholder="Language" />
+                      <label className="fieldlabels">Proficiency: *</label>
+                      <input type="text" name="proficiency" placeholder="Proficiency" />
+                      <input type="button" name="addMore" className="action-button" value="Add More" />
+                    </div>
+                    <input type="button" name="save" className="action-button" value="Save" />
+                  </fieldset>
+                )}
+                {currentSection === 'skills' && (
+                  <fieldset>
+                    <div className="form-card">
+                      <h2 className="fs-title">Skills:</h2>
+                      <label className="fieldlabels">Skill: *</label>
+                      <input type="text" name="skill" placeholder="Skill" />
+                      <label className="fieldlabels">Proficiency: *</label>
+                      <input type="text" name="skillProficiency" placeholder="Proficiency" />
+                      <input type="button" name="addMore" className="action-button" value="Add More" />
+                    </div>
+                    <input type="button" name="save" className="action-button" value="Save" />
+                  </fieldset>
+                )}
+                {currentSection === 'payment' && (
+                  <fieldset>
+                    <div className="form-card">
+                      <h2 className="fs-title">Payment Information:</h2>
+                      <label className="fieldlabels">Credit Card Number: *</label>
+                      <input type="text" name="cardNumber" placeholder="Credit Card Number" />
+                      <label className="fieldlabels">Expiry Date: *</label>
+                      <input type="text" name="expiryDate" placeholder="Expiry Date" />
+                      <label className="fieldlabels">CVV: *</label>
+                      <input type="text" name="cvv" placeholder="CVV" />
+                      <label className="fieldlabels">Name on Card: *</label>
+                      <input type="text" name="cardName" placeholder="Name on Card" />
+                    </div>
+                    <input type="button" name="save" className="action-button" value="Save" />
+                  </fieldset>
+                )}
               </div>
-              <br />
-              {currentStep === 1 && (
-                <fieldset>
-                  <div className="form-card">
-                    <div className="row">
-                      <div className="col-7">
-                        <h2 className="fs-title">Account Information:</h2>
-                      </div>
-                      <div className="col-5">
-                        <h2 className="steps">Step 1 - 4</h2>
-                      </div>
-                    </div>
-                    <label className="fieldlabels">Email: *</label>
-                    <input type="email" name="email" placeholder="Email Id" />
-                    <label className="fieldlabels">Username: *</label>
-                    <input type="text" name="uname" placeholder="UserName" />
-                    <label className="fieldlabels">Password: *</label>
-                    <input type="password" name="pwd" placeholder="Password" />
-                    <label className="fieldlabels">Confirm Password: *</label>
-                    <input type="password" name="cpwd" placeholder="Confirm Password" />
-                  </div>
-                  <input type="button" name="next" className="next action-button" value="Next" onClick={handleNext} />
-                </fieldset>
-              )}
-              {currentStep === 2 && (
-                <fieldset>
-                  <div className="form-card">
-                    <div className="row">
-                      <div className="col-7">
-                        <h2 className="fs-title">Personal Information:</h2>
-                      </div>
-                      <div className="col-5">
-                        <h2 className="steps">Step 2 - 4</h2>
-                      </div>
-                    </div>
-                    <label className="fieldlabels">First Name: *</label>
-                    <input type="text" name="fname" placeholder="First Name" />
-                    <label className="fieldlabels">Last Name: *</label>
-                    <input type="text" name="lname" placeholder="Last Name" />
-                    <label className="fieldlabels">Contact No.: *</label>
-                    <input type="text" name="phno" placeholder="Contact No." />
-                    <label className="fieldlabels">Alternate Contact No.: *</label>
-                    <input type="text" name="phno_2" placeholder="Alternate Contact No." />
-                  </div>
-                  <input type="button" name="next" className="next action-button" value="Next" onClick={handleNext} />
-                  <input type="button" name="previous" className="previous action-button-previous" value="Previous" onClick={handlePrevious} />
-                </fieldset>
-              )}
-              {currentStep === 3 && (
-                <fieldset>
-                  <div className="form-card">
-                    <div className="row">
-                      <div className="col-7">
-                        <h2 className="fs-title">Image Upload:</h2>
-                      </div>
-                      <div className="col-5">
-                        <h2 className="steps">Step 3 - 4</h2>
-                      </div>
-                    </div>
-                    <label className="fieldlabels">Upload Your Photo:</label>
-                    <input type="file" name="pic" accept="image/*" />
-                    <label className="fieldlabels">Upload Signature Photo:</label>
-                    <input type="file" name="pic" accept="image/*" />
-                  </div>
-                  <input type="button" name="next" className="next action-button" value="Submit" onClick={handleNext} />
-                  <input type="button" name="previous" className="previous action-button-previous" value="Previous" onClick={handlePrevious} />
-                </fieldset>
-              )}
-              {currentStep === 4 && (
-                <fieldset>
-                  <div className="form-card">
-                    <div className="row">
-                      <div className="col-7">
-                        <h2 className="fs-title">Finish:</h2>
-                      </div>
-                      <div className="col-5">
-                        <h2 className="steps">Step 4 - 4</h2>
-                      </div>
-                    </div>
-                    <br /><br />
-                    <h2 className="purple-text text-center"><strong>SUCCESS !</strong></h2>
-                    <br />
-                    <div className="row justify-content-center">
-                      <div className="col-3">
-                        <img src="https://i.imgur.com/GwStPmg.png" className="fit-image" alt="Success" />
-                      </div>
-                    </div>
-                    <br /><br />
-                    <div className="row justify-content-center">
-                      <div className="col-7 text-center">
-                        <h5 className="purple-text text-center">You Have Successfully Signed Up</h5>
-                      </div>
-                    </div>
-                  </div>
-                </fieldset>
-              )}
             </form>
           </div>
         </div>

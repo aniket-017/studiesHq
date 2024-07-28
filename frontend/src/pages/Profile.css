@@ -1,212 +1,142 @@
-* {
-    margin: 0;
-    padding: 0;
-  }
-  
-  html {
-    height: 100%;
-  }
-  
-  p {
-    color: grey;
-  }
-  
-  #heading {
-    text-transform: uppercase;
-    color: #673AB7;
-    font-weight: normal;
-  }
-  
-  #msform {
-    text-align: center;
-    position: relative;
-    margin-top: 20px;
-  }
-  
-  #msform fieldset {
-    background: white;
-    border: 0 none;
-    border-radius: 0.5rem;
-    box-sizing: border-box;
-    width: 100%;
-    margin: 0;
-    padding-bottom: 20px;
-    position: relative;
-  }
-  
-  .form-card {
-    text-align: left;
-  }
-  
-  #msform fieldset:not(:first-of-type) {
-    display: none;
-  }
-  
-  #msform input,
-  #msform textarea {
-    padding: 8px 15px;
-    border: 1px solid #ccc;
-    border-radius: 0;
-    margin-bottom: 25px;
-    margin-top: 2px;
-    width: 100%;
-    box-sizing: border-box;
-    font-family: montserrat;
-    color: #2C3E50;
-    background-color: #ECEFF1;
-    font-size: 16px;
-    letter-spacing: 1px;
-  }
-  
-  #msform input:focus,
-  #msform textarea:focus {
-    box-shadow: none !important;
-    border: 1px solid #673AB7;
-    outline-width: 0;
-  }
-  
-  #msform .action-button {
-    width: 100px;
-    background: #673AB7;
-    font-weight: bold;
-    color: white;
-    border: 0 none;
-    border-radius: 0;
-    cursor: pointer;
-    padding: 10px 5px;
-    margin: 10px 0px 10px 5px;
-    float: right;
-  }
-  
-  #msform .action-button:hover,
-  #msform .action-button:focus {
-    background-color: #311B92;
-  }
-  
-  #msform .action-button-previous {
-    width: 100px;
-    background: #616161;
-    font-weight: bold;
-    color: white;
-    border: 0 none;
-    border-radius: 0;
-    cursor: pointer;
-    padding: 10px 5px;
-    margin: 10px 5px 10px 0px;
-    float: right;
-  }
-  
-  #msform .action-button-previous:hover,
-  #msform .action-button-previous:focus {
-    background-color: #000000;
-  }
-  
-  .card {
-    z-index: 0;
-    border: none;
-    border-radius: 0.5rem;
-    position: relative;
-    width: 100%;
-    max-width: 80vw;
-    max-height: 100vh;
-  }
-  
-  .fs-title {
-    font-size: 25px;
-    color: #673AB7;
-    margin-bottom: 10px;
-    font-weight: normal;
-    text-align: left;
-  }
-  
-  .purple-text {
-    color: #673AB7;
-    font-weight: normal;
-  }
-  
-  .steps {
-    font-size: 25px;
-    color: grey;
-    margin-bottom: 10px;
-    font-weight: normal;
-    text-align: right;
-  }
-  
-  .fieldlabels {
-    color: grey;
-    text-align: left;
-  }
-  
-  #progressbar {
-    margin-bottom: 30px;
-    overflow: hidden;
-    color: lightgrey;
-  }
-  
-  #progressbar .active {
-    color: #673AB7;
-  }
-  
-  #progressbar li {
-    list-style-type: none;
-    font-size: 12px;
-    width: 25%;
-    float: left;
-    position: relative;
-  }
-  
-  #progressbar #account:before {
-    font-family: FontAwesome;
-    content: "\f13e";
-  }
-  
-  #progressbar #personal:before {
-    font-family: FontAwesome;
-    content: "\f007";
-  }
-  
-  #progressbar #payment:before {
-    font-family: FontAwesome;
-    content: "\f030";
-  }
-  
-  #progressbar #confirm:before {
-    font-family: FontAwesome;
-    content: "\f00c";
-  }
-  
-  #progressbar li:before {
-    width: 50px;
-    height: 50px;
-    line-height: 45px;
-    display: block;
-    font-size: 18px;
-    color: #ffffff;
-    background: lightgrey;
-    border-radius: 50%;
-    margin: 0 auto 10px auto;
-    padding: 2px;
-  }
-  
-  #progressbar li:after {
-    content: '';
-    width: 100%;
-    height: 2px;
-    background: lightgrey;
-    position: absolute;
-    left: 0;
-    top: 25px;
-    z-index: -1;
-  }
-  
-  #progressbar li.active:before,
-  #progressbar li.active:after {
-    background: #673AB7;
-  }
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+  color: #333;
+}
 
-  .container-fluid{
-    display: flex;
-    justify-content: center;
-  align-items: center;
-  }
+.container-fluid {
+  padding: 40px 15px;
+}
 
+.card1 {
+  width: 70vw;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+p {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+}
+
+/* Section Tabs */
+#section-tabs {
+  display: flex;
+  justify-content: space-around;
+  list-style-type: none;
+  padding: 0;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+#section-tabs li {
+  cursor: pointer;
+  padding: 10px 15px;
+  transition: all 0.3s;
+  position: relative;
+}
+
+#section-tabs li.active {
+  color: #007bff;
+  font-weight: bold;
+}
+
+#section-tabs li.active::after {
+  content: '';
+  display: block;
+  height: 3px;
+  background: #007bff;
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+}
+
+#section-tabs li:hover {
+  color: #007bff;
+}
+
+/* Form Card */
+.form-card {
+  text-align: left;
+}
+
+.form-card h2 {
+  font-size: 1.4em;
+  margin-bottom: 20px;
+  color: #007bff;
+}
+
+.fieldlabels {
+  margin-bottom: 10px;
+  display: block;
+  font-weight: bold;
+  color: #555;
+}
+
+input[type="text"], input[type="email"], input[type="date"], textarea {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin: 10px 0 20px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: border-color 0.3s;
+}
+
+input[type="text"]:focus, input[type="email"]:focus, input[type="date"]:focus, textarea:focus {
+  border-color: #007bff;
+}
+
+textarea {
+  height: 100px;
+}
+
+.row .col-md-4, .row .col-md-6, .row .col-md-12 {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.row .col-md-4 input, .row .col-md-6 input, .row .col-md-12 input {
+  width: 90%; /* Adjust width to fit within the column */
+}
+
+input.full-width {
+  width: calc(100% - 20px);
+}
+
+/* Buttons */
+.action-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  display: inline-block;
+  margin: 10px 5px;
+}
+
+.action-button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.action-button:active {
+  transform: translateY(1px);
+}
+
+.action-button-previous {
+  background-color: #6c757d;
+}
+
+.action-button-previous:hover {
+  background-color: #5a6268;
+}
+
+fieldset {
+  border: none;
+}

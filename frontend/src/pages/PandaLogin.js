@@ -38,7 +38,7 @@ const PandaLogin = () => {
   };
 
   return (
-    <div>
+    <div className='loginpage'>
       {!signUp ? (
         <Login
           loginName={loginName}

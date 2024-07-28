@@ -2,62 +2,59 @@ import React, { useState } from 'react';
 import './MyGigs.css';
 
 const MyGigs = () => {
-  const [activeSection, setActiveSection] = useState('allocated');
+  const [activeTab, setActiveTab] = useState('allocated');
 
-  const gigsAllocated = [
-    { date: '2024-07-20', topic: 'Web Development', description: 'Building a responsive website.' },
-    { date: '2024-07-21', topic: 'Data Analysis', description: 'Analyzing sales data.' },
+  const allocatedGigs = [
+    { id: 1, title: 'Web Development', description: 'Ongoing project for building a corporate website' },
+    { id: 2, title: 'Mobile App Design', description: 'Designing UI for a new mobile application' },
   ];
 
-  const gigsApplied = [
-    { date: '2024-07-18', topic: 'Graphic Design', description: 'Creating marketing materials.' },
-    { date: '2024-07-19', topic: 'SEO Optimization', description: 'Improving website SEO.' },
+  const completedGigs = [
+    { id: 3, title: 'Graphic Design', description: 'Completed branding materials for a startup' },
+    { id: 4, title: 'SEO Optimization', description: 'Improved search rankings for a client website' },
   ];
 
-  const gigsCompleted = [
-    { date: '2024-07-15', topic: 'Content Writing', description: 'Writing blog posts.' },
-    { date: '2024-07-16', topic: 'App Development', description: 'Developing a mobile app.' },
+  const appliedGigs = [
+    { id: 5, title: 'Content Writing', description: 'Applied for writing articles for a tech blog' },
+    { id: 6, title: 'Data Analysis', description: 'Applied for analyzing sales data for a retail company' },
   ];
 
-  const renderTable = (data) => (
-    <table>
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Topic</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((gig, index) => (
-          <tr key={index}>
-            <td>{gig.date}</td>
-            <td>{gig.topic}</td>
-            <td>{gig.description}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+  const renderGigs = (gigs) => (
+    gigs.map(gig => (
+      <div key={gig.id} className="mygigs-gig-card">
+        <h3 className="mygigs-gig-title">{gig.title}</h3>
+        <p className="mygigs-gig-description">{gig.description}</p>
+      </div>
+    ))
   );
 
   return (
-    <div className="my-gigs">
-      <h1>My Gigs</h1>
-      <div className="tabs">
-        <button onClick={() => setActiveSection('allocated')} className={activeSection === 'allocated' ? 'active' : ''}>
-          Gigs Allocated
+    <div className="mygigs-container">
+      <h2>My Gigs</h2>
+      <div className="mygigs-tabs">
+        <button
+          className={activeTab === 'allocated' ? 'mygigs-active' : ''}
+          onClick={() => setActiveTab('allocated')}
+        >
+          Allocated Gigs
         </button>
-        <button onClick={() => setActiveSection('applied')} className={activeSection === 'applied' ? 'active' : ''}>
-          Gigs Applied
+        <button
+          className={activeTab === 'completed' ? 'mygigs-active' : ''}
+          onClick={() => setActiveTab('completed')}
+        >
+          Completed Gigs
         </button>
-        <button onClick={() => setActiveSection('completed')} className={activeSection === 'completed' ? 'active' : ''}>
-          Gigs Completed
+        <button
+          className={activeTab === 'applied' ? 'mygigs-active' : ''}
+          onClick={() => setActiveTab('applied')}
+        >
+          Applied Gigs
         </button>
       </div>
-      <div className="table-container">
-        {activeSection === 'allocated' && renderTable(gigsAllocated)}
-        {activeSection === 'applied' && renderTable(gigsApplied)}
-        {activeSection === 'completed' && renderTable(gigsCompleted)}
+      <div className="mygigs-gigs-content">
+        {activeTab === 'allocated' && renderGigs(allocatedGigs)}
+        {activeTab === 'completed' && renderGigs(completedGigs)}
+        {activeTab === 'applied' && renderGigs(appliedGigs)}
       </div>
     </div>
   );
