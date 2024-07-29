@@ -1,0 +1,81 @@
+/* AdminDashboard.css */
+
+.admin-dashboard {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .user-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .user-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 300px;
+    transition: transform 0.3s ease;
+  }
+  
+  .user-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .user-card h2 {
+    font-size: 24px;
+    color: #444;
+    margin-bottom: 10px;
+  }
+  
+  .user-card p {
+    font-size: 16px;
+    color: #666;
+  }
+  
+  .gig-list {
+    margin-top: 15px;
+  }
+  
+  .gig-card {
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .gig-card h3 {
+    font-size: 20px;
+    color: #444;
+    margin-bottom: 5px;
+  }
+  
+  .gig-card p {
+    font-size: 14px;
+    color: #777;
+  }
+  
+  .gig-card button {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .gig-card button:hover {
+    background-color: #218838;
+  }
+  

@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import { brewReducer } from './Services/Reducers/brewReducer';
 import { giftCardsReducer, newGiftCardReducer } from './Services/Reducers/giftCardReducers';
 import { forgotPasswordReducer, profileReducer, userReducer } from "./Services/Reducers/userReducer.js";
+import { gigsReducer } from './Services/Reducers/gigsReducer.js';
 
 const store = configureStore({
   reducer:{
@@ -11,7 +12,8 @@ const store = configureStore({
    newGiftCard: newGiftCardReducer,
    user: userReducer,
    forgotPassword:forgotPasswordReducer,
-   profile: profileReducer
+   profile: profileReducer,
+   gig: gigsReducer,
   },
   
   });

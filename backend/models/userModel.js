@@ -4,6 +4,39 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
+const gigSchema = new mongoose.Schema({
+  gigId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Gig",
+    required: true,
+  },
+  title: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    // required: true,
+  },
+  deadline:{
+    type: String,
+  },
+  budget:{
+    type:String,
+  },
+  status: {
+    type: String,
+    enum: ["applied", "allocated", "completed"],
+    required: true,
+  },
+  appliedAt: {
+    type: Date,
+    default: Date.now,
+  },
+  allocatedAt: Date,
+  completedAt: Date,
+});
+
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -23,16 +56,6 @@ const userSchema = new mongoose.Schema({
     minLength: [8, "Password should be greater than 8 characters"],
     select: false,
   },
-  //   avatar: {
-  //     public_id: {
-  //       type: String,
-  //       required: true,
-  //     },
-  //     url: {
-  //       type: String,
-  //       required: true,
-  //     },
-  //   },
   role: {
     type: String,
     default: "user",
@@ -41,7 +64,7 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-
+  gigs: [gigSchema],
   resetPasswordToken: String,
   resetPasswordExpire: Date,
 });
@@ -53,8 +76,7 @@ userSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, 10);
 });
 
-//JWT Tokens
-
+// JWT Tokens
 userSchema.methods.getJWTToken = function () {
   return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRE,
@@ -62,7 +84,6 @@ userSchema.methods.getJWTToken = function () {
 };
 
 // Compare Password
-
 userSchema.methods.comparePassword = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
@@ -80,4 +101,4 @@ userSchema.methods.getResetPasswordToken = function () {
   return resetToken;
 };
 
-module.exports = mongoose.model("user", userSchema);
+module.exports = mongoose.model("User", userSchema);

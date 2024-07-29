@@ -1,6 +1,7 @@
 const ErrorHander = require("../utils/errorhander");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const User = require("../models/userModel");
+const Gig = require("../models/gigModel.js");
 const sendToken = require("../utils/jwtToken");
 const sendEmail = require("../utils/sendEmail.js");
 const crypto = require("crypto");
@@ -9,7 +10,6 @@ const crypto = require("crypto");
 // Register a User
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
 
-  console.log(req.body);
   const { name, email, password } = req.body;
 
   const user = await User.create({
@@ -22,6 +22,73 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
   
 
   sendToken(user, 201, res);
+});
+
+// apply for gig
+exports.applyForGig = catchAsyncErrors(async (req, res, next) => {
+  const user = await User.findById(req.user.id);
+
+  const gig = await Gig.findById(req.body.gigId);
+
+  const usergig = {
+    gigId: req.body.gigId,
+    title: gig.title,
+    description: gig.description,
+    deadline: gig.deadline,
+    budget: gig.budget,
+    status: "applied",
+    status: "applied",
+  };
+
+  user.gigs.push(usergig);
+  await user.save();
+
+  res.status(200).json({
+    success: true,
+    message: "Applied for gig successfully",
+  });
+});
+
+
+// Approve a Gig (Admin):
+exports.approveGig = catchAsyncErrors(async (req, res, next) => {
+  const user = await User.findById(req.params.userId);
+
+  const gig = user.gigs.id(req.params.gigId);
+  if (!gig) {
+    return next(new ErrorHander("Gig not found", 404));
+  }
+
+  gig.status = "allocated";
+  gig.allocatedAt = Date.now();
+
+  await user.save();
+
+  res.status(200).json({
+    success: true,
+    message: "Gig approved successfully",
+  });
+});
+
+
+// Complete a Gig:
+exports.completeGig = catchAsyncErrors(async (req, res, next) => {
+  const user = await User.findById(req.user.id);
+
+  const gig = user.gigs.id(req.params.gigId);
+  if (!gig) {
+    return next(new ErrorHander("Gig not found", 404));
+  }
+
+  gig.status = "completed";
+  gig.completedAt = Date.now();
+
+  await user.save();
+
+  res.status(200).json({
+    success: true,
+    message: "Gig completed successfully",
+  });
 });
 
 //Login User
@@ -79,7 +146,7 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
  
   const resetPasswordUrl = `${req.protocol}://${req.get(
     "host"
-)}/aak/l1/password/reset/${resetToken}`;
+  )}/aak/l1/password/reset/${resetToken}`;
 
   // const resetPasswordUrl = `${req.protocol}://${req.get("host")}/password/reset/${resetToken}`;
   const message = `Your password reset token is s :- \n\n ${resetPasswordUrl} \n\nIf you have not requested this email then, please ignore it.`;
