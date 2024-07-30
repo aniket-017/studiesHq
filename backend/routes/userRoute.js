@@ -16,6 +16,7 @@ const {
   applyForGig,
   approveGig,
   completeGig,
+  getAllGigsWithApplicants,
 } = require("../controllers/userController");
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
 const router = express.Router();
@@ -40,5 +41,6 @@ router.route("/admin/user/:id").delete(isAuthenticatedUser, authorizeRoles("admi
 router.route("/gig/apply").post(isAuthenticatedUser, applyForGig);
 router.route("/admin/gig/approve/:userId/:gigId").put(isAuthenticatedUser, authorizeRoles("admin"), approveGig);
 router.route("/gig/complete/:gigId").put(isAuthenticatedUser, completeGig);
+router.route("/admin/gigs").get(isAuthenticatedUser, authorizeRoles("admin"), getAllGigsWithApplicants);
 
 module.exports = router;

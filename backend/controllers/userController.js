@@ -9,26 +9,26 @@ const crypto = require("crypto");
 
 // Register a User
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
-
   const { name, email, password } = req.body;
 
   const user = await User.create({
     name,
     email,
     password,
-
   });
-
-  
 
   sendToken(user, 201, res);
 });
 
 // apply for gig
+// apply for gig
 exports.applyForGig = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findById(req.user.id);
-
   const gig = await Gig.findById(req.body.gigId);
+
+  if (!gig) {
+    return next(new ErrorHander("Gig not found", 404));
+  }
 
   const usergig = {
     gigId: req.body.gigId,
@@ -37,11 +37,14 @@ exports.applyForGig = catchAsyncErrors(async (req, res, next) => {
     deadline: gig.deadline,
     budget: gig.budget,
     status: "applied",
-    status: "applied",
   };
 
   user.gigs.push(usergig);
   await user.save();
+
+  gig.applicants.push(req.user.id);
+  gig.status = "applied";
+  await gig.save();
 
   res.status(200).json({
     success: true,
@@ -49,54 +52,155 @@ exports.applyForGig = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
+// Get all gigs with applicants (Admin)
+exports.getAllGigsWithApplicants = catchAsyncErrors(async (req, res, next) => {
+  // Aggregation pipeline to match gigs with applicants
+  const gigs = await Gig.aggregate([
+    {
+      $lookup: {
+        from: "users", // Collection name for users
+        localField: "applicants",
+        foreignField: "_id",
+        as: "applicantsDetails",
+      },
+    },
+    {
+      $addFields: {
+        applicantsDetails: {
+          $map: {
+            input: "$applicantsDetails",
+            as: "applicant",
+            in: {
+              _id: "$$applicant._id", // Include user _id
+              name: "$$applicant.name",
+              email: "$$applicant.email",
+              gigs: {
+                $filter: {
+                  input: "$$applicant.gigs",
+                  as: "gigDetail",
+                  cond: { $eq: ["$$gigDetail.gigId", "$_id"] },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        title: 1,
+        description: 1,
+        deadline: 1,
+        budget: 1,
+        status: 1,
+        createdAt: 1,
+        applicantsDetails: 1, // Include all details of applicants
+      },
+    },
+  ]);
 
-// Approve a Gig (Admin):
+  console.log(gigs);
+  res.status(200).json({
+    success: true,
+    gigs,
+  });
+});
+
+// Approve a Gig (Admin)
 exports.approveGig = catchAsyncErrors(async (req, res, next) => {
-  const user = await User.findById(req.params.userId);
+  const userId = req.params.userId;
+  const gigId = req.params.gigId;
 
-  const gig = user.gigs.id(req.params.gigId);
+  const user = await User.findById(userId);
+  const gig = await Gig.findById(gigId);
+
   if (!gig) {
     return next(new ErrorHander("Gig not found", 404));
   }
 
-  gig.status = "allocated";
-  gig.allocatedAt = Date.now();
+  if (!user) {
+    return next(new ErrorHander("User not found", 404));
+  }
 
+  // Convert gigId to ObjectId if needed
+  // const objectIdGigId = mongoose.Types.ObjectId(gigId);
+  console.log("uptil");
+  // Find the gig within the user's gigs array
+  const userGigIndex = user.gigs.findIndex((gigDetail) => gigDetail.gigId.equals(gigId));
+
+  if (userGigIndex === -1) {
+    return next(new ErrorHander("User's gig not found", 404));
+  }
+
+  // Update the user's gig details
+  user.gigs[userGigIndex].status = "allocated";
+  user.gigs[userGigIndex].allocatedAt = Date.now();
   await user.save();
 
+  // Update the gig status
+  gig.status = "allocated";
+  await gig.save();
+
+  console.log("upd");
   res.status(200).json({
     success: true,
     message: "Gig approved successfully",
   });
 });
 
-
-// Complete a Gig:
+// Complete a Gig
 exports.completeGig = catchAsyncErrors(async (req, res, next) => {
-  const user = await User.findById(req.user.id);
+  const userId = req.user.id;
+  const gigId = req.params.gigId;
 
-  const gig = user.gigs.id(req.params.gigId);
+  const user = await User.findById(userId);
+  const gig = await Gig.findById(gigId);
+
   if (!gig) {
     return next(new ErrorHander("Gig not found", 404));
   }
 
-  gig.status = "completed";
-  gig.completedAt = Date.now();
+  if (!user) {
+    return next(new ErrorHander("User not found", 404));
+  }
 
+  // Convert gigId to ObjectId if needed
+  // const objectIdGigId = mongoose.Types.ObjectId(gigId);
+
+  // Find the gig within the user's gigs array
+  const userGigIndex = user.gigs.findIndex((gigDetail) =>
+    gigDetail.gigId.equals(gigId)
+  );
+
+  console.log("here");
+  if (userGigIndex === -1) {
+    return next(new ErrorHander("User's gig not found", 404));
+  }
+
+  // Update the user's gig details
+  user.gigs[userGigIndex].status = "completed";
+  user.gigs[userGigIndex].completedAt = Date.now();
   await user.save();
 
+  // Update the gig status
+  gig.status = "completed";
+  await gig.save();
+
+  console.log("sdfs");
   res.status(200).json({
     success: true,
     message: "Gig completed successfully",
   });
 });
 
+
 //Login User
 
 exports.loginUser = catchAsyncErrors(async (req, res, next) => {
   const { email, password } = req.body;
 
-  // checking if user has given password and email both 
+  // checking if user has given password and email both
 
   if (!email || !password) {
     return next(new ErrorHander("Please Enter Email & Password", 400));
@@ -113,7 +217,6 @@ exports.loginUser = catchAsyncErrors(async (req, res, next) => {
   if (!isPasswordMatched) {
     return next(new ErrorHander("Invalid email or password b", 401));
   }
- 
 
   sendToken(user, 200, res);
 });
@@ -139,14 +242,12 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHander("User not found", 404));
   }
 
-//   // Get ResetPassword Token
+  //   // Get ResetPassword Token
   const resetToken = user.getResetPasswordToken();
 
   await user.save({ validateBeforeSave: false });
- 
-  const resetPasswordUrl = `${req.protocol}://${req.get(
-    "host"
-  )}/aak/l1/password/reset/${resetToken}`;
+
+  const resetPasswordUrl = `${req.protocol}://${req.get("host")}/aak/l1/password/reset/${resetToken}`;
 
   // const resetPasswordUrl = `${req.protocol}://${req.get("host")}/password/reset/${resetToken}`;
   const message = `Your password reset token is s :- \n\n ${resetPasswordUrl} \n\nIf you have not requested this email then, please ignore it.`;
@@ -172,15 +273,10 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
-
 // Reset Password
 exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
   // creating token hash
-  const resetPasswordToken = crypto
-    .createHash("sha256")
-    .update(req.params.token)
-    .digest("hex");
-
+  const resetPasswordToken = crypto.createHash("sha256").update(req.params.token).digest("hex");
 
   const user = await User.findOne({
     resetPasswordToken,
@@ -188,17 +284,10 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
   });
 
   if (!user) {
-    return next(
-      new ErrorHander(
-        "Reset Password Token is invalid or has been expired",
-        400
-      )
-    );
+    return next(new ErrorHander("Reset Password Token is invalid or has been expired", 400));
   }
- 
-  if (req.body.password !== req.body.confirmPassword) {
-    
 
+  if (req.body.password !== req.body.confirmPassword) {
     return next(new ErrorHander("Password does not password", 400));
   }
 
@@ -210,7 +299,6 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
 
   sendToken(user, 200, res);
 });
-
 
 // // Get User Detail
 exports.getUserDetails = catchAsyncErrors(async (req, res, next) => {
@@ -280,7 +368,6 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-
 //
 //
 //
@@ -299,9 +386,7 @@ exports.getSingleUser = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findById(req.params.id);
 
   if (!user) {
-    return next(
-      new ErrorHander(`User does not exist with Id: ${req.params.id}`)
-    );
+    return next(new ErrorHander(`User does not exist with Id: ${req.params.id}`));
   }
 
   res.status(200).json({
@@ -334,9 +419,7 @@ exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findById(req.params.id);
 
   if (!user) {
-    return next(
-      new ErrorHander(`User does not exist with Id: ${req.params.id}`, 400)
-    );
+    return next(new ErrorHander(`User does not exist with Id: ${req.params.id}`, 400));
   }
 
   // const imageId = user.avatar.public_id;

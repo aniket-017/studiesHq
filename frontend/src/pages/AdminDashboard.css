@@ -1,81 +1,101 @@
-/* AdminDashboard.css */
-
+/* General Styles */
 .admin-dashboard {
-    font-family: Arial, sans-serif;
-    padding: 20px;
-    background-color: #f9f9f9;
-  }
-  
-  h1 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  .user-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-  }
-  
-  .user-card {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    width: 300px;
-    transition: transform 0.3s ease;
-  }
-  
-  .user-card:hover {
-    transform: translateY(-5px);
-  }
-  
-  .user-card h2 {
-    font-size: 24px;
-    color: #444;
-    margin-bottom: 10px;
-  }
-  
-  .user-card p {
-    font-size: 16px;
-    color: #666;
-  }
-  
-  .gig-list {
-    margin-top: 15px;
-  }
-  
-  .gig-card {
-    background-color: #f1f1f1;
-    border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 10px;
-  }
-  
-  .gig-card h3 {
-    font-size: 20px;
-    color: #444;
-    margin-bottom: 5px;
-  }
-  
-  .gig-card p {
-    font-size: 14px;
-    color: #777;
-  }
-  
-  .gig-card button {
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    padding: 8px 12px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .gig-card button:hover {
-    background-color: #218838;
-  }
-  
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  padding: 20px;
+  background-color: #f5f5f5;
+}
+
+h1 {
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Loader and Error Messages */
+div.loading,
+div.error {
+  text-align: center;
+  font-size: 1.2em;
+  color: #e74c3c;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+/* Gig List */
+.gig-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.gig-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gig-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.gig-card h2 {
+  margin-top: 0;
+  color: #2980b9;
+}
+
+/* Applicant List */
+.applicant-list {
+  margin-top: 20px;
+}
+
+.applicant-card {
+  background-color: #ecf0f1;
+  border: 1px solid #bdc3c7;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 15px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.applicant-card:hover {
+  background-color: #dcdcdc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.applicant-card h3 {
+  margin-top: 0;
+  color: #3498db;
+}
+
+.applicant-card p {
+  margin: 5px 0;
+  font-size: 0.9em;
+}
+
+/* Buttons */
+button {
+  background-color: #27ae60;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  padding: 10px 20px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+  background-color: #2ecc71;
+  transform: scale(1.05);
+}
+
+button:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
+}

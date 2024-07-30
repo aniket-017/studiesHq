@@ -4,27 +4,33 @@ import axios from "axios";
 import "./AdminDashboard.css";
 
 const AdminDashboard = () => {
-  const [users, setUsers] = useState([]);
+  const [gigs, setGigs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const token = useSelector((state) => state.user.token);
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchGigs = async () => {
       try {
-        const response = await axios.get("/aak/l1/admin/users", {
+        const response = await axios.get("/aak/l1/admin/gigs", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        setUsers(response.data.users);
+        setGigs(response.data.gigs || []);
+        console.log(response.data.gigs);
+        setLoading(false);
       } catch (error) {
-        console.error("Error fetching users", error);
+        setError("Error fetching gigs");
+        setLoading(false);
       }
     };
 
-    fetchUsers();
+    fetchGigs();
   }, [token]);
 
   const approveGig = async (userId, gigId) => {
+    console.log(userId, gigId);
     try {
       await axios.put(
         `/aak/l1/admin/gig/approve/${userId}/${gigId}`,
@@ -36,48 +42,70 @@ const AdminDashboard = () => {
         }
       );
       // Update UI after approval
-      setUsers((prevUsers) =>
-        prevUsers.map((user) =>
-          user._id === userId
-            ? {
-                ...user,
-                gigs: user.gigs.map((gig) =>
-                  gig._id === gigId ? { ...gig, status: "allocated" } : gig
-                ),
-              }
-            : user
-        )
-      );
+      // setGigs((prevGigs) =>
+      //   prevGigs.map((gig) =>
+      //     gig._id === gigId
+      //       ? {
+      //           ...gig,
+      //           applicants: gig.applicants.map((applicant) =>
+      //             applicant._id === userId
+      //               ? {
+      //                   ...applicant,
+      //                   gigs: applicant.gigs.map((gigDetail) =>
+      //                     gigDetail.gigId === gigId ? { ...gigDetail, status: "allocated" } : gigDetail
+      //                   ),
+      //                 }
+      //               : applicant
+      //           ),
+      //         }
+      //       : gig
+      //   )
+      // );
     } catch (error) {
       console.error("Error approving gig", error);
     }
   };
 
+  const getStatus = (applicantGigs, gigId) => {
+    const gigDetail = applicantGigs.find((gigDetail) => gigDetail.gigId === gigId);
+    return gigDetail ? gigDetail.status : "Not Applied";
+  };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
+
   return (
     <div className="admin-dashboard">
       <h1>Admin Dashboard</h1>
-      <div className="user-list">
-        {users.map((user) => (
-          <div key={user._id} className="user-card">
-            <h2>{user.name}</h2>
-            <p>Email: {user.email}</p>
-            <div className="gig-list">
-              {user.gigs.map((gig) => (
-                <div key={gig._id} className="gig-card">
-                  <h3>{gig.title}</h3>
-                  <p>Status: {gig.status}</p>
-                  {gig.status === "applied" && (
-                    <button
-                      onClick={() => approveGig(user._id, gig._id)}
-                    >
-                      Approve
-                    </button>
-                  )}
-                </div>
-              ))}
+      <div className="gig-list">
+        {gigs.length === 0 ? (
+          <p>No gigs available</p>
+        ) : (
+          gigs.map((gig) => (
+            <div key={gig._id} className="gig-card">
+              <h2>{gig.title}</h2>
+              <p>Description: {gig.description}</p>
+              <p>Deadline: {gig.deadline}</p>
+              <p>Budget: {gig.budget}</p>
+              <div className="applicant-list">
+                {gig.applicantsDetails && gig.applicantsDetails.length > 0 ? (
+                  gig.applicantsDetails.map((applicant) => (
+                    <div key={applicant._id} className="applicant-card">
+                      <h3>{applicant.name}</h3>
+                      <p>Email: {applicant.email}</p>
+                      <p>Status: {getStatus(applicant.gigs, gig._id)}</p>
+                      {getStatus(applicant.gigs, gig._id) === "applied" && (
+                        <button onClick={() => approveGig(applicant._id, gig._id)}>Approve</button>
+                      )}
+                    </div>
+                  ))
+                ) : (
+                  <p>No applicants</p>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );

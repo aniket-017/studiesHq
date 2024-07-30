@@ -9,11 +9,11 @@ const gigSchema = new mongoose.Schema({
     type: String,
     // required: true,
   },
-  deadline:{
+  deadline: {
     type: String,
   },
-  budget:{
-    type:String,
+  budget: {
+    type: String,
   },
   status: {
     type: String,
@@ -24,7 +24,10 @@ const gigSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  // You can add more fields as necessary
+  applicants: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  }],
 });
 
 module.exports = mongoose.model("Gig", gigSchema);

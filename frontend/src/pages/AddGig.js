@@ -19,7 +19,7 @@ const AddGig = () => {
     }
 
     if (success) {
-      alert('Gig added successfully');
+      alert('study added successfully');
       // Clear form fields
       setTitle('');
       setDescription('');
@@ -44,7 +44,7 @@ const AddGig = () => {
   return (
     <div className="add-gig">
       <form onSubmit={submitHandler}>
-        <h1>Add Gig</h1>
+        <h1>Add Study</h1>
         <div>
           <label>Title</label>
           <input

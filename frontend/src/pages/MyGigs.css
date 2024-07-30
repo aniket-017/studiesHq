@@ -1,4 +1,4 @@
-.mygigs-container {
+/* .mygigs-container {
   padding: 20px;
   background-color: #f9f9f9;
 }
@@ -60,4 +60,78 @@
 .mygigs-gig-description {
   font-size: 14px;
   color: #666;
+} */
+
+
+/* MyGigs.css */
+
+.mygigs-container {
+  padding: 20px;
+  background-color: #f4f4f9;
+  font-family: Arial, sans-serif;
+}
+
+.mygigs-tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.mygigs-tabs button {
+  padding: 10px 20px;
+  margin: 0 5px;
+  background-color: #ddd;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.mygigs-tabs button.mygigs-active {
+  background-color: #28a745;
+  color: white;
+}
+
+.mygigs-tabs button:hover:not(.mygigs-active) {
+  background-color: #ccc;
+}
+
+.mygigs-gigs-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.mygigs-gig-card {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 300px;
+}
+
+.mygigs-gig-title {
+  margin-bottom: 10px;
+  font-size: 20px;
+  color: #333;
+}
+
+.mygigs-gig-description {
+  margin-bottom: 20px;
+  color: #555;
+}
+
+.mygigs-complete-btn {
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.mygigs-complete-btn:hover {
+  background-color: #0056b3;
 }
