@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { loadUser } from "../Services/Actions/userAction";
 import axios from "axios";
 import "./MyGigs.css";
 
@@ -12,6 +13,12 @@ const MyGigs = () => {
   const allocatedGigs = gigs.filter((gig) => gig.status === "allocated");
   const completedGigs = gigs.filter((gig) => gig.status === "completed");
   const appliedGigs = gigs.filter((gig) => gig.status === "applied");
+
+  console.log(appliedGigs);
+
+  // useEffect(() => {
+  //   dispatch(loadUser());
+  // }, [dispatch]);
 
   const markAsCompleted = async (gigId) => {
     try {

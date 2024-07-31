@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import "./Sidebar.css"; // Ensure you import the CSS
+import { useDispatch } from "react-redux";
+import { logout } from "../Services/Actions/userAction";
+
 import {
   FaHome,
   FaBriefcase,
@@ -19,21 +22,25 @@ import {
 import { Link } from "react-router-dom";
 
 const Sidebar = () => {
+  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
 
+  const handleLogout = () => {
+    dispatch(logout());
+  };
+
   return (
     <div className={`sidebar ${isOpen ? "open" : ""}`}>
       <div className="logo-details">
-        
         <i className="bx bxl-codepen"></i>
         <div className="logo_name">StudyHQ</div>
         <i className="bx bx-menu" id="btn" onClick={toggleSidebar}>
-        {isOpen ?  <FaAngleLeft  id="btn" className="icon" /> : <FaAngleRight id="btn" className="icon"/>}
-         
+          {isOpen ? <FaAngleLeft id="btn" className="icon" /> : <FaAngleRight id="btn" className="icon" />}
+
           {/* see i want to change this react instead i want other icon such as arrow when now open then it should different after open it should rotate by some degree */}
         </i>
       </div>
@@ -53,18 +60,18 @@ const Sidebar = () => {
             <i className="bx bx-user">
               <FaBriefcase className="icon " />
             </i>
-            <span className="links_name">My gigs</span>
+            <span className="links_name">My studies</span>
           </Link>
-          <span className="tooltip">My gigs</span>
+          <span className="tooltip">My studies</span>
         </li>
         <li>
           <Link to="/available-gigs" className="linke">
             <i className="bx bx-chat">
               <FaTasks className="icon " />
             </i>
-            <span className="links_name">Available gigs</span>
+            <span className="links_name">Available studies</span>
           </Link>
-          <span className="tooltip">Available gigs</span>
+          <span className="tooltip">Available studies</span>
         </li>
         <li>
           <Link to="/profile" className="linke">
@@ -85,43 +92,43 @@ const Sidebar = () => {
           <span className="tooltip">Earnings</span>
         </li>
         <li>
-        <Link to="/preferences" className="linke">
+          <Link to="/preferences" className="linke">
             <i className="bx bx-cart-alt">
               <FaCog className="icon " />
             </i>
             <span className="links_name">Preferences</span>
-            </Link>
+          </Link>
           <span className="tooltip">Preferences</span>
         </li>
         <li>
-        <Link to="/message" className="linke">
+          <Link to="/message" className="linke">
             <i className="bx bx-heart">
               <FaEnvelope className="icon " />
             </i>
             <span className="links_name">Message</span>
-            </Link>
+          </Link>
           <span className="tooltip">Message</span>
         </li>
         <li>
-        <Link to="/knowledge-bank" className="linke">
+          <Link to="/knowledge-bank" className="linke">
             <i className="bx bx-cog">
               <FaInfoCircle className="icon " />
             </i>
             <span className="links_name">Knowledge Bank</span>
-            </Link>
+          </Link>
           <span className="tooltip">Knowledge Bank</span>
         </li>
         <li>
-        <Link to="/support" className="linke">
+          <Link to="/support" className="linke">
             <i className="bx bx-cog">
               <FaHeadset className="icon " />
             </i>
             <span className="links_name">Support</span>
-            </Link>
+          </Link>
           <span className="tooltip">Support</span>
         </li>
         <li className="profile">
-          <div className="profile-details">
+          <div className="profile-details" onClick={handleLogout}>
             <i className="bx bx-export">
               <FaSignOutAlt className="icon " />
             </i>

@@ -81,7 +81,7 @@ const AddGig = () => {
           />
         </div>
         <button type="submit" disabled={loading ? true : false}>
-          {loading ? 'Loading...' : 'Add Gig'}
+          {loading ? 'Loading...' : 'Add Study'}
         </button>
       </form>
     </div>

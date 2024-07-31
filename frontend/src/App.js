@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { loadUser } from "./Services/Actions/userAction.js";
 import Home from "./Home";
 import MyGigs from "./pages/MyGigs";
 import AvailableGigs from "./pages/AvailableGigs";
@@ -13,11 +15,20 @@ import PandaLogin from "./pages/PandaLogin";
 import Sidebar from "./components/Sidebar";
 import AddGig from "./pages/AddGig";
 import AdminDashboard from "./pages/AdminDashboard.js"; // Import the AdminDashboard component
+import Loading from './components/Loading.js'; 
 import "./App.css"; // Import the CSS for layout
 
-
 function App() {
-  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+  const dispatch = useDispatch();
+  const { isAuthenticated, loading } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    dispatch(loadUser()); // Load user data on app load
+  }, [dispatch]);
+
+  if (loading) {
+    return <Loading />; // Show loading screen while fetching user data
+  }
 
   return (
     <div className="app">
@@ -26,12 +37,12 @@ function App() {
         <div className="content">
           <Routes>
             {/* Public Route */}
-            {!isAuthenticated &&  <Route path="/" element={<PandaLogin />} /> }
+            {!isAuthenticated && <Route path="/" element={<PandaLogin />} />}
 
             {/* Authenticated Routes */}
             {isAuthenticated ? (
               <>
-                <Route path="/" element={<Home />} />
+                <Route exact path="/" element={<Home />} />
                 <Route path="/my-gigs" element={<MyGigs />} />
                 <Route path="/available-gigs" element={<AvailableGigs />} />
                 <Route path="/profile" element={<Profile />} />

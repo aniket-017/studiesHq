@@ -10,7 +10,21 @@ const gigSchema = new mongoose.Schema({
     ref: "Gig",
     required: true,
   },
-  
+  title: {
+    type: String,
+    // required: true,
+  },
+  description: {
+    type: String,
+    // required: true,
+  },
+  deadline: {
+    type: String,
+  },
+  budget: {
+    type: String,
+  },
+
   status: {
     type: String,
     enum: ["applied", "allocated", "completed"],

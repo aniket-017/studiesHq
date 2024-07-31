@@ -13,7 +13,7 @@ const AvailableGigs = () => {
 
   const { gigs, successMessage } = useSelector((state) => ({
     gigs: state.gig.gigs, // Adjust state path as necessary
-    successMessage: state.gig.successMessage // Assuming this is where the success message is stored
+    successMessage: state.gig.successMessage, // Assuming this is where the success message is stored
   }));
 
   const handleApply = (gigId) => {

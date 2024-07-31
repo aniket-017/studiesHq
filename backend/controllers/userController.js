@@ -23,27 +23,50 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
 // apply for gig
 // apply for gig
 exports.applyForGig = catchAsyncErrors(async (req, res, next) => {
-  const user = await User.findById(req.user.id);
-  const gig = await Gig.findById(req.body.gigId);
+  const userId = req.user.id;
+  const gigId = req.body.gigId;
 
+  const user = await User.findById(userId);
+  const gig = await Gig.findById(gigId);
+
+  console.log("gig :", gig);
   if (!gig) {
     return next(new ErrorHander("Gig not found", 404));
   }
 
+  if (!user) {
+    return next(new ErrorHander("User not found", 404));
+  }
+
+  // Convert gigId to ObjectId if needed
+  // const objectIdGigId = mongoose.Types.ObjectId(gigId);
+
+  // Check if user has already applied for the gig
+  // const hasApplied = user.gigs.some((gigDetail) => gigDetail.gigId.toString() === gigId.toString());
+
+  // if (hasApplied) {
+  //   return next(new ErrorHander("You have already applied for this gig", 400));
+  // }
+
+
   const usergig = {
-    gigId: req.body.gigId,
+    gigId: gigId,
     title: gig.title,
     description: gig.description,
     deadline: gig.deadline,
     budget: gig.budget,
     status: "applied",
+    appliedAt: Date.now(),
   };
+  console.log("usergig :", usergig);
 
   user.gigs.push(usergig);
   await user.save();
 
-  gig.applicants.push(req.user.id);
-  gig.status = "applied";
+  gig.applicants.push(userId);
+  if (gig.status === "open") {
+    gig.status = "applied";
+  }
   await gig.save();
 
   res.status(200).json({
@@ -169,9 +192,7 @@ exports.completeGig = catchAsyncErrors(async (req, res, next) => {
   // const objectIdGigId = mongoose.Types.ObjectId(gigId);
 
   // Find the gig within the user's gigs array
-  const userGigIndex = user.gigs.findIndex((gigDetail) =>
-    gigDetail.gigId.equals(gigId)
-  );
+  const userGigIndex = user.gigs.findIndex((gigDetail) => gigDetail.gigId.equals(gigId));
 
   console.log("here");
   if (userGigIndex === -1) {
@@ -193,7 +214,6 @@ exports.completeGig = catchAsyncErrors(async (req, res, next) => {
     message: "Gig completed successfully",
   });
 });
-
 
 //Login User
 
