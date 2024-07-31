@@ -8,7 +8,7 @@ const MyGigs = () => {
   const dispatch = useDispatch();
   const gigs = useSelector((state) => state.user.user.gigs);
   const token = useSelector((state) => state.user.token);
-  const [activeTab, setActiveTab] = useState("allocated");
+  const [activeTab, setActiveTab] = useState("applied");
 
   const allocatedGigs = gigs.filter((gig) => gig.status === "allocated");
   const completedGigs = gigs.filter((gig) => gig.status === "completed");
@@ -61,15 +61,16 @@ const MyGigs = () => {
     <div className="mygigs-container">
       <h2>My Studies</h2>
       <div className="mygigs-tabs">
+      <button className={activeTab === "applied" ? "mygigs-active" : ""} onClick={() => setActiveTab("applied")}>
+          Applied Studies
+        </button>
         <button className={activeTab === "allocated" ? "mygigs-active" : ""} onClick={() => setActiveTab("allocated")}>
           Allocated Studies
         </button>
         <button className={activeTab === "completed" ? "mygigs-active" : ""} onClick={() => setActiveTab("completed")}>
           Completed Studies
         </button>
-        <button className={activeTab === "applied" ? "mygigs-active" : ""} onClick={() => setActiveTab("applied")}>
-          Applied Studies
-        </button>
+       
       </div>
       <div className="mygigs-gigs-content">
         {activeTab === "allocated" && renderGigs(allocatedGigs, true)}
