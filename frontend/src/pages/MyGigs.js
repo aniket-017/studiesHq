@@ -14,8 +14,6 @@ const MyGigs = () => {
   const completedGigs = gigs.filter((gig) => gig.status === "completed");
   const appliedGigs = gigs.filter((gig) => gig.status === "applied");
 
-  console.log(appliedGigs);
-
   // useEffect(() => {
   //   dispatch(loadUser());
   // }, [dispatch]);
@@ -44,13 +42,31 @@ const MyGigs = () => {
     }
   };
 
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
   const renderGigs = (gigs, isAllocated = false) =>
     gigs.map((gig) => (
       <div key={gig._id} className="mygigs-gig-card">
         <h3 className="mygigs-gig-title">{gig.title}</h3>
         <p className="mygigs-gig-description">{gig.description}</p>
+        <div className="gig-details">
+          <span className="gig-location">Gift Card ${gig.budget}</span>
+          <span className="gig-date">Deadline: {formatDate(gig.deadline)}</span>
+          {activeTab !== "allocated" && activeTab !== "completed" && (
+            <span className="gig-date">Applied: {formatDate(gig.appliedAt)}</span>
+          )}
+          {activeTab === "allocated" && (
+            <span className="gig-date">Allocated: {formatDate(gig.allocatedAt)}</span>
+          )}
+          {activeTab === "completed" && (
+            <span className="gig-date">Completed: {formatDate(gig.completedAt)}</span>
+          )}
+        </div>
         {isAllocated && (
-          <button className="mygigs-complete-btn" onClick={() => markAsCompleted(gig.gigId)}>
+          <button className="mygigs-complete-btn" onClick={() => markAsCompleted(gig._id)}>
             Mark as Completed
           </button>
         )}
@@ -61,16 +77,24 @@ const MyGigs = () => {
     <div className="mygigs-container">
       <h2>My Studies</h2>
       <div className="mygigs-tabs">
-      <button className={activeTab === "applied" ? "mygigs-active" : ""} onClick={() => setActiveTab("applied")}>
+        <button
+          className={activeTab === "applied" ? "mygigs-active" : ""}
+          onClick={() => setActiveTab("applied")}
+        >
           Applied Studies
         </button>
-        <button className={activeTab === "allocated" ? "mygigs-active" : ""} onClick={() => setActiveTab("allocated")}>
+        <button
+          className={activeTab === "allocated" ? "mygigs-active" : ""}
+          onClick={() => setActiveTab("allocated")}
+        >
           Allocated Studies
         </button>
-        <button className={activeTab === "completed" ? "mygigs-active" : ""} onClick={() => setActiveTab("completed")}>
+        <button
+          className={activeTab === "completed" ? "mygigs-active" : ""}
+          onClick={() => setActiveTab("completed")}
+        >
           Completed Studies
         </button>
-       
       </div>
       <div className="mygigs-gigs-content">
         {activeTab === "allocated" && renderGigs(allocatedGigs, true)}

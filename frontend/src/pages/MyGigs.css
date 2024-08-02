@@ -65,7 +65,7 @@
 
 /* MyGigs.css */
 
-.mygigs-container {
+/* .mygigs-container {
   padding: 20px;
   background-color: #f4f4f9;
   font-family: Arial, sans-serif;
@@ -134,4 +134,102 @@
 
 .mygigs-complete-btn:hover {
   background-color: #0056b3;
+} */
+
+
+/* MyGigs.css */
+.mygigs-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.mygigs-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.mygigs-tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.mygigs-tabs button {
+  background-color: #f0f0f0;
+  border: none;
+  padding: 10px 20px;
+  margin: 0 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-radius: 5px;
+  color: #333;
+}
+
+.mygigs-tabs button:hover,
+.mygigs-tabs .mygigs-active {
+  background-color: #333;
+  color: #fff;
+}
+
+.mygigs-gigs-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.mygigs-gig-card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.mygigs-gig-card:hover {
+  transform: translateY(-5px);
+}
+
+.mygigs-gig-title {
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+  font-size: 1.2em;
+  margin: 0;
+}
+
+.mygigs-gig-description {
+  padding: 15px;
+  color: #555;
+}
+
+.gig-details {
+  padding: 0 15px 15px;
+  color: #777;
+}
+
+.gig-details span {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.mygigs-complete-btn {
+  display: block;
+  width: calc(100% - 30px);
+  margin: 0 15px 15px;
+  padding: 10px 0;
+  text-align: center;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.mygigs-complete-btn:hover {
+  background-color: #218838;
 }

@@ -99,18 +99,18 @@ const Sidebar = () => {
             <i className="bx bx-cart-alt">
               <FaCog className="icon " />
             </i>
-            <span className="links_name">Preferences / Create study</span>
+            <span className="links_name">Preferences</span>
           </Link>
-          <span className="tooltip">Preferences / Create study</span>
+          <span className="tooltip">Preferences</span>
         </li>
         <li>
           <Link to="/message" className="linke">
             <i className="bx bx-heart">
               <FaEnvelope className="icon " />
             </i>
-            <span className="links_name">Message / admin dash</span>
+            <span className="links_name">Message</span>
           </Link>
-          <span className="tooltip">Message / admin dash</span>
+          <span className="tooltip">Message</span>
         </li>
         <li>
           <Link to="/knowledge-bank" className="linke">
