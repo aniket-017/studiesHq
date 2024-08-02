@@ -203,3 +203,84 @@ export const forgotPasswordReducer = (state = {}, action) => {
       return state;
   }
 };
+
+const initialAdminState = {
+  loading: false,
+  users: [],
+  user: null,
+  error: null,
+  success: false,
+  message: null,
+};
+
+// Admin Reducer
+export const adminReducer = (state = initialAdminState, action) => {
+  switch (action.type) {
+    case ALL_USERS_REQUEST:
+    case USER_DETAILS_REQUEST:
+    case UPDATE_USER_REQUEST:
+    case DELETE_USER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case ALL_USERS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        users: action.payload,
+      };
+
+    case USER_DETAILS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        user: action.payload,
+      };
+
+    case UPDATE_USER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        success: true,
+        message: action.payload,
+      };
+
+    case DELETE_USER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        success: true,
+        message: action.payload.message,
+      };
+
+    case ALL_USERS_FAIL:
+    case USER_DETAILS_FAIL:
+    case UPDATE_USER_FAIL:
+    case DELETE_USER_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+
+    // case ALL_USERS_RESET:
+    case UPDATE_USER_RESET:
+    case DELETE_USER_RESET:
+      return {
+        ...state,
+        success: false,
+        message: null,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};

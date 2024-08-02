@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 import "./AdminDashboard.css";
+
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
 const AdminDashboard = () => {
   const [gigs, setGigs] = useState([]);
@@ -71,6 +74,28 @@ const AdminDashboard = () => {
     return gigDetail ? gigDetail.status : "Not Applied";
   };
 
+  const generatePieData = (applicants) => {
+    const statusCounts = {
+      applied: 0,
+      allocated: 0,
+      completed: 0,
+      "not applied": 0,
+    };
+
+    applicants.forEach((applicant) => {
+      applicant.gigs.forEach((gigDetail) => {
+        if (statusCounts[gigDetail.status.toLowerCase()] !== undefined) {
+          statusCounts[gigDetail.status.toLowerCase()]++;
+        }
+      });
+    });
+
+    return Object.keys(statusCounts).map((status) => ({
+      name: status.charAt(0).toUpperCase() + status.slice(1),
+      value: statusCounts[status],
+    }));
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 
@@ -103,6 +128,24 @@ const AdminDashboard = () => {
                   <p>No applicants</p>
                 )}
               </div>
+              <PieChart width={400} height={400}>
+                <Pie
+                  data={generatePieData(gig.applicantsDetails)}
+                  cx={200}
+                  cy={200}
+                  labelLine={false}
+                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                  outerRadius={80}
+                  fill="#8884d8"
+                  dataKey="value"
+                >
+                  {generatePieData(gig.applicantsDetails).map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip />
+                <Legend />
+              </PieChart>
             </div>
           ))
         )}

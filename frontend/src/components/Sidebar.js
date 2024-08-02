@@ -12,10 +12,8 @@ import {
   FaInfoCircle,
   FaHeadset,
   FaSignOutAlt,
-  FaSearch,
   FaMoneyBill,
   FaEnvelope,
-  FaSlidersH,
   FaAngleRight,
   FaAngleLeft,
 } from "react-icons/fa";
@@ -23,7 +21,7 @@ import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   const dispatch = useDispatch();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true); // Sidebar open initially
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -37,11 +35,17 @@ const Sidebar = () => {
     <div className={`sidebar ${isOpen ? "open" : ""}`}>
       <div className="logo-details">
         <i className="bx bxl-codepen"></i>
-        <div className="logo_name">StudyHQ</div>
-        <i className="bx bx-menu" id="btn" onClick={toggleSidebar}>
-          {isOpen ? <FaAngleLeft id="btn" className="icon" /> : <FaAngleRight id="btn" className="icon" />}
-
-          {/* see i want to change this react instead i want other icon such as arrow when now open then it should different after open it should rotate by some degree */}
+        <div className="logo_name">StudiesHQ</div>
+        <i
+          className={`bx bx-menu ${isOpen ? "rotate" : ""}`}
+          id="btn"
+          onClick={toggleSidebar}
+        >
+          {isOpen ? (
+            <FaAngleLeft id="btn" className="icon" />
+          ) : (
+            <FaAngleRight id="btn" className="icon" />
+          )}
         </i>
       </div>
       <ul className="nav-list">
@@ -50,7 +54,6 @@ const Sidebar = () => {
             <i className="bx bx-grid-alt">
               <FaHome className="icon " />
             </i>
-
             <span className="links_name">Home</span>
           </Link>
           <span className="tooltip">Home</span>

@@ -36,7 +36,7 @@ const AvailableGigs = () => {
               <h3 className="gig-title">{gig.title}</h3>
               <p className="gig-description">{gig.description}</p>
               <div className="gig-details">
-                <span className="gig-location">Budget: {gig.budget}</span>
+                <span className="gig-location">Gift Card ${gig.budget}</span>
                 <span className="gig-date">Deadline: {gig.deadline}</span>
               </div>
               <button className="apply-button" onClick={() => handleApply(gig._id)}>
