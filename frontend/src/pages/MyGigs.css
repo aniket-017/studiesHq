@@ -175,13 +175,15 @@
 }
 
 .mygigs-gigs-content {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  display: flex;
+  width: 80vw;
+  /* grid-template-columns: repeat(auto-fit, minmax(300px, 0fr)); */
   gap: 20px;
 }
 
 .mygigs-gig-card {
   background-color: #fff;
+  width: 300px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -232,4 +234,13 @@
 
 .mygigs-complete-btn:hover {
   background-color: #218838;
+}
+
+.study-details{
+  display: flex;
+  flex-direction: column;
+ padding: 0px 15px;
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 10px;
 }

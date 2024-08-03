@@ -52,7 +52,7 @@ const MyGigs = () => {
       <div key={gig._id} className="mygigs-gig-card">
         <h3 className="mygigs-gig-title">{gig.title}</h3>
         <p className="mygigs-gig-description">{gig.description}</p>
-        <div className="gig-details">
+        <div className="study-details">
           <span className="gig-location">Gift Card ${gig.budget}</span>
           <span className="gig-date">Deadline: {formatDate(gig.deadline)}</span>
           {activeTab !== "allocated" && activeTab !== "completed" && (
