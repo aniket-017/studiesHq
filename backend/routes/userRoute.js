@@ -1,5 +1,4 @@
 const express = require("express");
-// const {registerUser, loginUser, logout, forgotPassword, resetPassword, getUserDetails, updatePassword, updateProfile, getAllUser, getSingleUser, updateUserRole, deleteUser} = require("../controllers/userController")
 const {
   registerUser,
   loginUser,
@@ -17,6 +16,8 @@ const {
   approveGig,
   completeGig,
   getAllGigsWithApplicants,
+  requestGiftCard,  // New route for requesting a gift card
+  approveGiftCard,  // New route for admin to approve gift card requests
 } = require("../controllers/userController");
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
 const router = express.Router();
@@ -42,5 +43,9 @@ router.route("/gig/apply").post(isAuthenticatedUser, applyForGig);
 router.route("/admin/gig/approve/:userId/:gigId").put(isAuthenticatedUser, authorizeRoles("admin"), approveGig);
 router.route("/gig/complete/:gigId").put(isAuthenticatedUser, completeGig);
 router.route("/admin/gigs").get(isAuthenticatedUser, authorizeRoles("admin"), getAllGigsWithApplicants);
+
+// Gift Card Routes
+router.route("/gig/:gigId/request-gift-card").post(isAuthenticatedUser, requestGiftCard);
+router.route("/admin/gift-card/approve/:userId/:gigId").put(isAuthenticatedUser, authorizeRoles("admin"), approveGiftCard);
 
 module.exports = router;

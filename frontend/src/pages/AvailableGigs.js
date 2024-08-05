@@ -4,6 +4,7 @@ import { fetchGigs, applyGig } from "../Services/Actions/gigsActions.js"; // Adj
 import Popup from "./Popup"; // Import the Popup component
 import "./AvailableGigs.css";
 import { loadUser } from "../Services/Actions/userAction.js";
+import calendar from "../Assets/photos/calendar.png";
 
 const AvailableGigs = () => {
   const dispatch = useDispatch();
@@ -41,18 +42,28 @@ const AvailableGigs = () => {
     dispatch(loadUser());
   };
 
+  const formatDate = (dateString) => {
+    const [year, day, month] = dateString.split("-");
+    return `${day}-${month}-${year}`;
+  };
+
   return (
     <div className="available-gigs">
       <h2>Available Studies</h2>
-      <div className="gig-list">
+      <div className="study-list">
         {filteredGigs && filteredGigs.length > 0 ? (
           filteredGigs.map((gig) => (
-            <div key={gig._id} className="gig-card">
-              <h3 className="gig-title">{gig.title}</h3>
-              <p className="gig-description">{gig.description}</p>
-              <div className="gig-details">
-                <span className="gig-location">Gift Card ${gig.budget}</span>
-                <span className="gig-date">Deadline: {gig.deadline}</span>
+            <div key={gig._id} className="homestudy-card">
+              <h3 className="study-title">{gig.title}</h3>
+              <p className="study-description">{gig.description}</p>
+              <div className="home-study-details">
+                <span className="study-location">
+                  Gift Card <div></div>${gig.budget}
+                </span>
+                <span className="study-date">
+                  <img src={calendar} alt="Calendar" className="calendar-icon" /> Last Date<div></div>{" "}
+                  {formatDate(gig.deadline)}
+                </span>
               </div>
               <button className="apply-button" onClick={() => handleApply(gig._id)}>
                 Apply Now

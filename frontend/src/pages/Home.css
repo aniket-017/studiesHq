@@ -72,13 +72,13 @@ body {
 }
 
 /* Popular Gigs Section */
- .popular-gigs {
-  padding: 50px 20px;
-  background-color: white;
+.popular-gigs {
+  padding: 50px 80px;
+  background-color: rgb(255, 255, 255);
 }
 
 .popular-gigs h2 {
-  font-size: 2.5em;
+  font-size: 2em;
   margin-bottom: 20px;
   color: #333;
 }
@@ -89,6 +89,95 @@ body {
   justify-content: center;
   gap: 20px;
 }
+
+.available-studies h2 {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+/* Card styling */
+.study-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.homestudy-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  padding: 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.homestudy-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+.study-title {
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.study-description {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+.home-study-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.study-location {
+  /* background: linear-gradient(45deg, #ffffff, #f9844a, #f94144,#777, #555, #333); */
+  /* background: linear-gradient(45deg, #f9844a, #f94144); */
+  background: linear-gradient(45deg, #f9c74f, #f9844a, #f94144);
+  /* background: linear-gradient(45deg, #333, #555, #777); */
+  color: #fff;
+  padding: 0.2rem 1.2rem;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  cursor:default;
+}
+
+/* Vibration effect on hover */
+.study-location:hover {
+  animation: vibrate 0.3s linear infinite;
+
+}
+
+@keyframes vibrate {
+  0% { transform: translateX(0); }
+  25% { transform: translateY(-2px); }
+  50% { transform: translateY(2px); }
+  75% { transform: translateY(-2px); }
+  100% { transform: translateX(0); }
+}
+
+.study-date {
+  font-size: 0.9rem;
+  color: #888;
+  cursor:default;
+}
+
+.calendar-icon {
+  width: 15px;
+  height: 15px;
+  margin-right: 2px;
+}
+
 /*
 .gig-card {
   background-color: white;
@@ -151,7 +240,7 @@ body {
 }
 
 .how-it-works h2 {
-  font-size: 2.5em;
+  font-size: 2em;
   margin-bottom: 20px;
   color: #333;
 }
@@ -192,7 +281,7 @@ body {
 }
 
 .testimonials h2 {
-  font-size: 2.5rem;
+  font-size: 2rem;
   margin-bottom: 2rem;
   color: #333;
 }
@@ -242,7 +331,7 @@ body {
 }
 
 .benefits h2 {
-  font-size: 2.5rem;
+  font-size: 2rem;
   margin-bottom: 2rem;
   color: #333;
 }
@@ -280,7 +369,9 @@ body {
 }
 
 .recent-gigs h2 {
-  font-size: 2.5em;
+  font-size: 2em;
   margin-bottom: 20px;
   color: #333;
 }
+
+

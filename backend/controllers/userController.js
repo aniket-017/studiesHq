@@ -29,7 +29,7 @@ exports.applyForGig = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findById(userId);
   const gig = await Gig.findById(gigId);
 
-  console.log("gig :", gig);
+  // console.log("gig :", gig);
   if (!gig) {
     return next(new ErrorHander("Gig not found", 404));
   }
@@ -48,7 +48,6 @@ exports.applyForGig = catchAsyncErrors(async (req, res, next) => {
   //   return next(new ErrorHander("You have already applied for this gig", 400));
   // }
 
-
   const usergig = {
     gigId: gigId,
     title: gig.title,
@@ -58,7 +57,7 @@ exports.applyForGig = catchAsyncErrors(async (req, res, next) => {
     status: "applied",
     appliedAt: Date.now(),
   };
-  console.log("usergig :", usergig);
+  // console.log("usergig :", usergig);
 
   user.gigs.push(usergig);
   await user.save();
@@ -123,7 +122,7 @@ exports.getAllGigsWithApplicants = catchAsyncErrors(async (req, res, next) => {
     },
   ]);
 
-  console.log(gigs);
+  // console.log(gigs);
   res.status(200).json({
     success: true,
     gigs,
@@ -148,7 +147,7 @@ exports.approveGig = catchAsyncErrors(async (req, res, next) => {
 
   // Convert gigId to ObjectId if needed
   // const objectIdGigId = mongoose.Types.ObjectId(gigId);
-  console.log("uptil");
+  // console.log("uptil");
   // Find the gig within the user's gigs array
   const userGigIndex = user.gigs.findIndex((gigDetail) => gigDetail.gigId.equals(gigId));
 
@@ -165,7 +164,7 @@ exports.approveGig = catchAsyncErrors(async (req, res, next) => {
   gig.status = "allocated";
   await gig.save();
 
-  console.log("upd");
+  // console.log("upd");
   res.status(200).json({
     success: true,
     message: "Gig approved successfully",
@@ -180,6 +179,7 @@ exports.completeGig = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findById(userId);
   const gig = await Gig.findById(gigId);
 
+  // console.log(gigId);
   if (!gig) {
     return next(new ErrorHander("Gig not found", 404));
   }
@@ -192,14 +192,16 @@ exports.completeGig = catchAsyncErrors(async (req, res, next) => {
   // const objectIdGigId = mongoose.Types.ObjectId(gigId);
 
   // Find the gig within the user's gigs array
+
   const userGigIndex = user.gigs.findIndex((gigDetail) => gigDetail.gigId.equals(gigId));
 
-  console.log("here");
+  // console.log("here");
   if (userGigIndex === -1) {
     return next(new ErrorHander("User's gig not found", 404));
   }
 
   // Update the user's gig details
+
   user.gigs[userGigIndex].status = "completed";
   user.gigs[userGigIndex].completedAt = Date.now();
   await user.save();
@@ -208,7 +210,7 @@ exports.completeGig = catchAsyncErrors(async (req, res, next) => {
   gig.status = "completed";
   await gig.save();
 
-  console.log("sdfs");
+  // console.log("sdfs");
   res.status(200).json({
     success: true,
     message: "Gig completed successfully",
@@ -453,3 +455,62 @@ exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
     message: "User Deleted Successfully",
   });
 });
+
+exports.requestGiftCard = async (req, res, next) => {
+  // console.log("trigger");
+  const { gigId } = req.params;
+  const userId = req.user._id;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    const gig = user.gigs.id(gigId);
+    if (!gig || gig.status !== "completed") {
+      return res.status(404).json({ success: false, message: "Completed gig not found" });
+    }
+
+    gig.giftCardRequests.push({
+      amount: gig.budget,
+      status: "pending",
+    });
+
+    await user.save();
+    res.status(200).json({ success: true, message: "Gift card request submitted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+exports.approveGiftCard = async (req, res, next) => {
+  const { userId, gigId } = req.params;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    const gig = user.gigs.id(gigId);
+    if (!gig) {
+      return res.status(404).json({ success: false, message: "Gig not found" });
+    }
+
+    const giftCardRequest = gig.giftCardRequests.find((request) => request.status === "pending");
+    if (!giftCardRequest) {
+      return res.status(404).json({ success: false, message: "No pending gift card request found" });
+    }
+
+    giftCardRequest.status = "approved";
+    giftCardRequest.approvedAt = Date.now();
+
+    await user.save();
+    res.status(200).json({ success: true, message: "Gift card request approved successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};

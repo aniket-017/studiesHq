@@ -19,6 +19,7 @@ const MyGigs = () => {
   // }, [dispatch]);
 
   const markAsCompleted = async (gigId) => {
+    console.log(gigId);
     try {
       const response = await axios.put(
         `/aak/l1/gig/complete/${gigId}`,
@@ -58,15 +59,11 @@ const MyGigs = () => {
           {activeTab !== "allocated" && activeTab !== "completed" && (
             <span className="gig-date">Applied: {formatDate(gig.appliedAt)}</span>
           )}
-          {activeTab === "allocated" && (
-            <span className="gig-date">Allocated: {formatDate(gig.allocatedAt)}</span>
-          )}
-          {activeTab === "completed" && (
-            <span className="gig-date">Completed: {formatDate(gig.completedAt)}</span>
-          )}
+          {activeTab === "allocated" && <span className="gig-date">Allocated: {formatDate(gig.allocatedAt)}</span>}
+          {activeTab === "completed" && <span className="gig-date">Completed: {formatDate(gig.completedAt)}</span>}
         </div>
         {isAllocated && (
-          <button className="mygigs-complete-btn" onClick={() => markAsCompleted(gig._id)}>
+          <button className="mygigs-complete-btn" onClick={() => markAsCompleted(gig.gigId)}>
             Mark as Completed
           </button>
         )}
@@ -77,22 +74,13 @@ const MyGigs = () => {
     <div className="mygigs-container">
       <h2>My Studies</h2>
       <div className="mygigs-tabs">
-        <button
-          className={activeTab === "applied" ? "mygigs-active" : ""}
-          onClick={() => setActiveTab("applied")}
-        >
+        <button className={activeTab === "applied" ? "mygigs-active" : ""} onClick={() => setActiveTab("applied")}>
           Applied Studies
         </button>
-        <button
-          className={activeTab === "allocated" ? "mygigs-active" : ""}
-          onClick={() => setActiveTab("allocated")}
-        >
+        <button className={activeTab === "allocated" ? "mygigs-active" : ""} onClick={() => setActiveTab("allocated")}>
           Allocated Studies
         </button>
-        <button
-          className={activeTab === "completed" ? "mygigs-active" : ""}
-          onClick={() => setActiveTab("completed")}
-        >
+        <button className={activeTab === "completed" ? "mygigs-active" : ""} onClick={() => setActiveTab("completed")}>
           Completed Studies
         </button>
       </div>
