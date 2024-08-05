@@ -70,7 +70,7 @@ const AdminSidebar = () => {
           <span className="tooltip">Manage Users</span>
         </li>
         <li>
-          <Link to="/manage-payout" className="linke">
+          <Link to="/managepayout" className="linke">
             <i>
               <FaTasks className="icon" />
             </i>

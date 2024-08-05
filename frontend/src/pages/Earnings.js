@@ -4,30 +4,18 @@ import axios from 'axios';
 import './Earnings.css';
 
 const Earnings = () => {
-  const [selectedGigs, setSelectedGigs] = useState(new Set());
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
   const gigs = useSelector((state) => state.user.user.gigs);
   const completedGigs = gigs.filter((gig) => gig.status === 'completed');
 
-  const toggleGigSelection = (gigId) => {
-    const updatedSelectedGigs = new Set(selectedGigs);
-    if (updatedSelectedGigs.has(gigId)) {
-      updatedSelectedGigs.delete(gigId);
-    } else {
-      updatedSelectedGigs.add(gigId);
-    }
-
-    setSelectedGigs(updatedSelectedGigs);
-  };
-
   const handleRequestGiftCard = async (gigId) => {
     setLoading(true);
     setMessage('');
 
     try {
-      await axios.post(`aak/l1/gig/${gigId}/request-gift-card`);
+      await axios.post(`/aak/l1/gig/${gigId}/request-gift-card`);
       setMessage('Gift card request submitted successfully!');
     } catch (error) {
       console.error('Error submitting gift card request', error);
@@ -51,7 +39,7 @@ const Earnings = () => {
           {completedGigs.length > 0 ? (
             completedGigs.map((gig) => (
               <div className="completedgiftcard" key={gig._id}>
-                <div>{gig.title}</div>
+                <h3>{gig.title}</h3>
                 <div>Allocated date: {formatDate(gig.allocatedAt)}</div>  
                 <div>Completed date: {formatDate(gig.completedAt)}</div>  
                 

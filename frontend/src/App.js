@@ -19,6 +19,7 @@ import Loading from "./components/Loading.js";
 import AdminSidebar from "./components/AdminSidebar.js";
 import ManageUser from "./Admin/ManageUser.js";
 import ManageStudies from "./Admin/ManageStudies.js";
+import ManagePayout from "./Admin/ManagePayout.js";
 
 import "./App.css"; // Import the CSS for layout
 
@@ -67,6 +68,7 @@ function App() {
                     <Route exact path="/" element={<AdminDashboard />} />
                     <Route exact path="/manageuser" element={<ManageUser />} />
                     <Route exact path="/managestudies" element={<ManageStudies />} />
+                    <Route exact path="/managepayout" element={<ManagePayout />} />
                     <Route path="/addstudies" element={<AddGig />} />
                   </>
                 )}

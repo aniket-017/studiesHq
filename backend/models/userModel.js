@@ -4,26 +4,6 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
-const giftCardRequestSchema = new mongoose.Schema({
-  amount: {
-    type: Number,
-    required: true,
-  },
-  requestedAt: {
-    type: Date,
-    default: Date.now,
-  },
-  approvedAt: {
-    type: Date,
-  },
-  status: {
-    type: String,
-    enum: ["pending", "approved", "rejected"],
-    required: true,
-    default: "pending",
-  },
-});
-
 const gigSchema = new mongoose.Schema({
   gigId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -32,15 +12,17 @@ const gigSchema = new mongoose.Schema({
   },
   title: {
     type: String,
+    required: true,
   },
   description: {
     type: String,
+    required: true,
   },
   deadline: {
-    type: String,
+    type: Date,
   },
   budget: {
-    type: String,
+    type: Number,
   },
   status: {
     type: String,
@@ -53,7 +35,18 @@ const gigSchema = new mongoose.Schema({
   },
   allocatedAt: Date,
   completedAt: Date,
-  giftCardRequests: [giftCardRequestSchema], // Add giftCardRequestSchema as a nested schema
+  paymentStatus: {
+    type: String,
+    enum: ["not requested", "requested", "approved", "paid"],
+    default: "not requested",
+  },
+  giftCardOption: {
+    type: String,
+    enum: ["visa", "master", "none"],
+  },
+  requestGiftCardAt: Date,
+  giftCardApprovedAt: Date,
+  giftCardPaidAt: Date,
 });
 
 const userSchema = new mongoose.Schema({
@@ -83,7 +76,7 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  gigs: [gigSchema], // Add gigs as an array of gigSchema
+  gigs: [gigSchema],
   resetPasswordToken: String,
   resetPasswordExpire: Date,
 });

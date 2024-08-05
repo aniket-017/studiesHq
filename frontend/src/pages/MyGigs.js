@@ -21,7 +21,7 @@ const MyGigs = () => {
   const markAsCompleted = async (gigId) => {
     console.log(gigId);
     try {
-      const response = await axios.put(
+      await axios.put(
         `/aak/l1/gig/complete/${gigId}`,
         {},
         {
@@ -30,18 +30,15 @@ const MyGigs = () => {
           },
         }
       );
-      // Update UI after marking as completed
-      dispatch({
-        type: "UPDATE_GIG_STATUS",
-        payload: {
-          gigId,
-          status: "completed",
-        },
-      });
+      // Show pop-up message
+      window.alert('Study marked as completed successfully!');
+      // Refresh the page
+      window.location.reload();
     } catch (error) {
       console.error("Error marking gig as completed", error);
     }
   };
+  
 
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };

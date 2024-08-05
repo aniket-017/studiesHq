@@ -457,60 +457,58 @@ exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.requestGiftCard = async (req, res, next) => {
-  // console.log("trigger");
-  const { gigId } = req.params;
-  const userId = req.user._id;
-
   try {
+    const { gigId } = req.params;
+    const userId = req.user._id;
+
     const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({ success: false, message: "User not found" });
-    }
 
     const gig = user.gigs.id(gigId);
-    if (!gig || gig.status !== "completed") {
-      return res.status(404).json({ success: false, message: "Completed gig not found" });
+    if (gig && gig.status === "completed") {
+      gig.paymentStatus = "requested";
+      gig.requestGiftCardAt = Date.now();
+
+      await user.save();
+
+      res.status(200).json({
+        success: true,
+        message: "Gift card request submitted successfully!",
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        message: "Gig not found or not completed.",
+      });
     }
-
-    gig.giftCardRequests.push({
-      amount: gig.budget,
-      status: "pending",
-    });
-
-    await user.save();
-    res.status(200).json({ success: true, message: "Gift card request submitted successfully" });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, message: "Server error" });
+    res.status(500).json({
+      success: false,
+      message: "Error submitting gift card request. Please try again later.",
+    });
   }
 };
-
 exports.approveGiftCard = async (req, res, next) => {
-  const { userId, gigId } = req.params;
-
   try {
+    const { userId, gigId } = req.params;
+
     const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({ success: false, message: "User not found" });
-    }
 
     const gig = user.gigs.id(gigId);
-    if (!gig) {
-      return res.status(404).json({ success: false, message: "Gig not found" });
+    if (gig && gig.paymentStatus === 'requested') {
+      gig.paymentStatus = 'approved';
+      gig.giftCardApprovedAt = Date.now();
     }
-
-    const giftCardRequest = gig.giftCardRequests.find((request) => request.status === "pending");
-    if (!giftCardRequest) {
-      return res.status(404).json({ success: false, message: "No pending gift card request found" });
-    }
-
-    giftCardRequest.status = "approved";
-    giftCardRequest.approvedAt = Date.now();
 
     await user.save();
-    res.status(200).json({ success: true, message: "Gift card request approved successfully" });
+
+    res.status(200).json({
+      success: true,
+      message: 'Gift card request approved successfully!',
+    });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, message: "Server error" });
+    res.status(500).json({
+      success: false,
+      message: 'Error approving gift card request. Please try again later.',
+    });
   }
 };
