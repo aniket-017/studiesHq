@@ -4,6 +4,7 @@ import axios from "axios";
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 import Modal from "react-modal";
 import "./ManageStudies.css";
+import Loading from "../components/Loading";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
@@ -13,6 +14,7 @@ const ManageStudies = () => {
   const [error, setError] = useState(null);
   const [selectedStudy, setSelectedStudy] = useState(null);
   const [formData, setFormData] = useState({ title: "", description: "", budget: "", deadline: "" });
+  const [loadingAction, setLoadingAction] = useState(false);
   const token = useSelector((state) => state.user.token);
 
   useEffect(() => {
@@ -58,11 +60,17 @@ const ManageStudies = () => {
 
   const handleEdit = (study) => {
     setSelectedStudy(study);
-    setFormData({ title: study.title, description: study.description, budget: study.budget, deadline: study.deadline });
+    setFormData({
+      title: study.title,
+      description: study.description,
+      budget: study.budget,
+      deadline: study.deadline,
+    });
   };
 
   const handleDelete = async (studyId) => {
     if (window.confirm("Are you sure you want to delete this study?")) {
+      setLoadingAction(true);
       try {
         await axios.delete(`/aak/l1/admin/gig/${studyId}`, {
           headers: {
@@ -72,14 +80,15 @@ const ManageStudies = () => {
         setGigs(gigs.filter((gig) => gig._id !== studyId));
       } catch (error) {
         setError("Error deleting study");
+      } finally {
+        setLoadingAction(false);
       }
     }
   };
 
   const handleUpdate = async () => {
+    setLoadingAction(true);
     try {
-      console.log(selectedStudy._id);
-
       const response = await axios.put(`/aak/l1/admin/gig/${selectedStudy._id}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -87,11 +96,10 @@ const ManageStudies = () => {
       });
       setGigs(gigs.map((gig) => (gig._id === selectedStudy._id ? response.data.gig : gig)));
       setSelectedStudy(null);
-
-      window.location.reload();
-    
     } catch (error) {
       setError("Error updating study");
+    } finally {
+      setLoadingAction(false);
     }
   };
 
@@ -103,7 +111,7 @@ const ManageStudies = () => {
     setSelectedStudy(null);
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div><Loading /></div>;
   if (error) return <div className="error-message">{error}</div>;
 
   return (
@@ -115,7 +123,9 @@ const ManageStudies = () => {
         <textarea name="description" value={formData.description} onChange={handleChange} placeholder="Description" />
         <input type="text" name="budget" value={formData.budget} onChange={handleChange} placeholder="Gift Card" />
         <input type="date" name="deadline" value={formData.deadline} onChange={handleChange} placeholder="Deadline" />
-        <button onClick={handleUpdate}>Save</button>
+        <button onClick={handleUpdate} disabled={loadingAction}>
+          {loadingAction ? "Saving..." : "Save"}
+        </button>
         <button onClick={closeModal}>Cancel</button>
       </Modal>
       <div className="studies-list">
@@ -135,7 +145,7 @@ const ManageStudies = () => {
                     cx={200}
                     cy={200}
                     labelLine={false}
-                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                    label={({ name, value }) => `${name}: ${value}`}
                     outerRadius={80}
                     fill="#8884d8"
                     dataKey="value"
@@ -150,7 +160,9 @@ const ManageStudies = () => {
               </div>
               <div className="study-actions">
                 <button onClick={() => handleEdit(study)}>Edit</button>
-                <button onClick={() => handleDelete(study._id)}>Delete</button>
+                <button onClick={() => handleDelete(study._id)} disabled={loadingAction}>
+                  {loadingAction ? "Deleting..." : "Delete"}
+                </button>
               </div>
             </div>
           ))

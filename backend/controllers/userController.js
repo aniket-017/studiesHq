@@ -487,6 +487,7 @@ exports.requestGiftCard = async (req, res, next) => {
     });
   }
 };
+
 exports.approveGiftCard = async (req, res, next) => {
   try {
     const { userId, gigId } = req.params;
@@ -494,8 +495,8 @@ exports.approveGiftCard = async (req, res, next) => {
     const user = await User.findById(userId);
 
     const gig = user.gigs.id(gigId);
-    if (gig && gig.paymentStatus === 'requested') {
-      gig.paymentStatus = 'approved';
+    if (gig && gig.paymentStatus === "requested") {
+      gig.paymentStatus = "approved";
       gig.giftCardApprovedAt = Date.now();
     }
 
@@ -503,12 +504,42 @@ exports.approveGiftCard = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      message: 'Gift card request approved successfully!',
+      message: "Gift card request approved successfully!",
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Error approving gift card request. Please try again later.',
+      message: "Error approving gift card request. Please try again later.",
     });
   }
 };
+
+// Function to send table data email
+exports.sendTableDataEmail = catchAsyncErrors(async (req, res, next) => {
+  console.log(req);
+  const { email, tableData } = req.body;
+
+  if (!email || !tableData) {
+    return next(new ErrorHander("Email and table data are required", 400));
+  }
+
+  const message = `
+    <p>Here is the table data:</p>
+    ${tableData}
+  `;
+
+  try {
+    await sendEmail({
+      email: email,
+      subject: "Table Data from Manage Payout",
+      html: message, // Use html to send the table data
+    });
+
+    res.status(200).json({
+      success: true,
+      message: `Table data sent to ${email} successfully`,
+    });
+  } catch (error) {
+    return next(new ErrorHander(error.message, 500));
+  }
+});

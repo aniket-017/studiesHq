@@ -3,7 +3,8 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 import "./AdminDashboard.css";
-
+import Modal from "react-modal";
+import Loading from "../components/Loading";
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
 const AdminDashboard = () => {
@@ -11,24 +12,25 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState(null);
+  const [popupMessage, setPopupMessage] = useState("");
   const token = useSelector((state) => state.user.token);
 
-  useEffect(() => {
-    const fetchGigs = async () => {
-      try {
-        const response = await axios.get("/aak/l1/admin/gigs", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setGigs(response.data.gigs || []);
-        setLoading(false);
-      } catch (error) {
-        setError("Error fetching gigs");
-        setLoading(false);
-      }
-    };
+  const fetchGigs = async () => {
+    try {
+      const response = await axios.get("/aak/l1/admin/gigs", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setGigs(response.data.gigs || []);
+      setLoading(false);
+    } catch (error) {
+      setError("Error fetching gigs");
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchGigs();
   }, [token]);
 
@@ -37,7 +39,7 @@ const AdminDashboard = () => {
       applied: 0,
       allocated: 0,
       completed: 0,
-      "not applied": 0,
+    
     };
 
     gigsList.forEach((gig) => {
@@ -71,6 +73,7 @@ const AdminDashboard = () => {
           },
         }
       );
+      setPopupMessage("Gig approved successfully!");
     } catch (error) {
       console.error("Error approving gig", error);
     }
@@ -81,7 +84,17 @@ const AdminDashboard = () => {
     return gigDetail ? gigDetail.status : "Not Applied";
   };
 
-  if (loading) return <div>Loading...</div>;
+  const closeModal = () => {
+    setPopupMessage("");
+    fetchGigs();
+  };
+
+  if (loading)
+    return (
+      <div>
+        <Loading />
+      </div>
+    );
   if (error) return <div>{error}</div>;
 
   return (
@@ -95,7 +108,8 @@ const AdminDashboard = () => {
             cx={200}
             cy={200}
             labelLine={false}
-            label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+            label={({ name, value }) => `${name}: ${value}`}
+
             outerRadius={80}
             fill="#8884d8"
             dataKey="value"
@@ -143,6 +157,12 @@ const AdminDashboard = () => {
             </div>
           </div>
         </>
+      )}
+      {popupMessage && (
+        <Modal isOpen={!!popupMessage} onRequestClose={closeModal} className="modal" overlayClassName="overlay">
+          <h2>{popupMessage}</h2>
+          <button onClick={closeModal}>Close</button>
+        </Modal>
       )}
     </div>
   );
