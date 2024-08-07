@@ -513,33 +513,45 @@ exports.approveGiftCard = async (req, res, next) => {
     });
   }
 };
-
-// Function to send table data email
 exports.sendTableDataEmail = catchAsyncErrors(async (req, res, next) => {
-  console.log(req);
+  // Log the request body for debugging
+  console.log("Request body:", req.body);
+
   const { email, tableData } = req.body;
 
+  // Validate the presence of email and table data
   if (!email || !tableData) {
+    console.error("Email and table data are required");
     return next(new ErrorHander("Email and table data are required", 400));
   }
 
+  // Compose the email message
   const message = `
     <p>Here is the table data:</p>
     ${tableData}
   `;
 
   try {
+    // Send the email
     await sendEmail({
       email: email,
       subject: "Table Data from Manage Payout",
       html: message, // Use html to send the table data
     });
 
+    // Log success message
+    console.log(`Table data sent to ${email} successfully`);
+
+    // Respond with success
     res.status(200).json({
       success: true,
       message: `Table data sent to ${email} successfully`,
     });
   } catch (error) {
+    // Log the error
+    console.error("Error sending email:", error);
+
+    // Handle the error with a 500 status code
     return next(new ErrorHander(error.message, 500));
   }
 });

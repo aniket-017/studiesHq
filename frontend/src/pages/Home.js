@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchGigs, applyGig } from "../Services/Actions/gigsActions.js";
 import { FaRegSmile, FaRegLightbulb, FaGift } from "react-icons/fa";
 import "./Home.css";
-import v1 from "../Assets/videos/1.mp4";
+import v1 from "../Assets/videos/3.mp4";
 import browse from "../Assets/photos/web-browser.png";
 import apply from "../Assets/photos/apply.png";
 import complete from "../Assets/photos/complete.png";
@@ -13,9 +13,12 @@ import studies from "../Assets/photos/studies.png";
 import participation from "../Assets/photos/participation.png";
 import rewards from "../Assets/photos/rewards.png";
 import calendar from "../Assets/photos/calendar.png";
+import { useNavigate } from "react-router-dom";
+// import MyGigs from './MyGigs';
 
 const Home = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [message, setMessage] = useState("");
 
   useEffect(() => {
@@ -38,8 +41,12 @@ const Home = () => {
   };
 
   const formatDate = (dateString) => {
-    const [year, day, month] = dateString.split('-');
+    const [year, day, month] = dateString.split("-");
     return `${day}-${month}-${year}`;
+  };
+
+  const handleGetStarted = () => {
+    navigate("/available-gigs");
   };
 
   return (
@@ -53,31 +60,39 @@ const Home = () => {
         <div className="hero-content">
           <h1>Welcome to StudiesHq</h1>
           <p>Apply for studies and earn gift cards</p>
-          <button>Get Started</button>
+          <button onClick={handleGetStarted}>Get Started</button>
+          {/* after click on this button redirect to mystudies which is
+             <Route path="/my-gigs" element={<MyGigs />} />
+              */}
         </div>
       </section>
 
       <section className="popular-gigs">
-      <div className="available-studies">
-        <h2>Popular Studies</h2>
-        <div className="study-list">
-          {gigs && gigs.length > 0 ? (
-            gigs.map((gig) => (
-              <div key={gig._id} className="homestudy-card">
-                <h3 className="study-title">{gig.title}</h3>
-                <p className="study-description">{gig.description}</p>
-                <div className="home-study-details">
-                  <span className="study-location">GiftCard <div></div>${gig.budget}</span>
-                  <span className="study-date"><img src={calendar} alt="Calendar" className="calendar-icon" /> Last Date<div></div> {formatDate(gig.deadline)}</span>
+        <div className="available-studies">
+          <h2>Popular Studies</h2>
+          <div className="study-list">
+            {gigs && gigs.length > 0 ? (
+              gigs.map((gig) => (
+                <div key={gig._id} className="homestudy-card">
+                  <h3 className="study-title">{gig.title}</h3>
+                  <p className="study-description">{gig.description}</p>
+                  <div className="home-study-details">
+                    <span className="study-location">
+                      GiftCard <div></div>${gig.budget}
+                    </span>
+                    <span className="study-date">
+                      <img src={calendar} alt="Calendar" className="calendar-icon" /> Last Date<div></div>{" "}
+                      {formatDate(gig.deadline)}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            ))
-          ) : (
-            <div>No gigs available</div>
-          )}
+              ))
+            ) : (
+              <div>No gigs available</div>
+            )}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
       <section className="how-it-works">
         <h2>How It Works</h2>

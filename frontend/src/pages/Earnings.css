@@ -2,7 +2,7 @@
 
 .earnings-page {
   font-family: 'Arial', sans-serif;
-  
+  width: 84vw;
   margin: 0 auto;
   padding: 20px;
   background-color: #f9f9f9;
@@ -10,9 +10,10 @@
 
 h2 {
   text-align: center;
+  font-size: 2em;
   margin-bottom: 20px;
   color: #333;
-  font-size: 24px;
+
   font-weight: bold;
 }
 
